@@ -18,8 +18,8 @@ export async function generateSummaryFromOpenAI(pdfText: string) {
           content: `Transform this document into an engaging, easy-to-read summary with contextually relevant emojis and proper markdown formatting:\n\n${pdfText}`,
         },
       ],
-      temperature: 0.7,
-      max_tokens: 1500,
+      temperature: 0.6,
+      max_tokens: 1200,
     });
     return completion.choices[0].message.content;
   } catch (error: any) {

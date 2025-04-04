@@ -7,6 +7,7 @@ import Details from './_components/details'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ChevronLeft, Trash } from 'lucide-react'
+import DeleteProjectButton from '../../_component/DeleteProjectButton'
 
 const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>}) => {
 
@@ -41,7 +42,7 @@ const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>})
           <Button variant={"outline"} asChild>
             <Link href={"/dashboard"}><ChevronLeft /> Back to dashboard</Link>
           </Button>
-          <Button><Trash /> Delete Project</Button>
+          <DeleteProjectButton id={id}/>
           
         </div>
         
