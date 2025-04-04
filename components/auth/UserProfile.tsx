@@ -3,12 +3,14 @@
 import useSessionUser from "@/hooks/use-session-user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { LogOut, Settings, Sparkles, User, Wallet } from "lucide-react";
+import { Files, Handshake, LogOut, Settings, Sparkles, User, Wallet } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Skeleton } from "../ui/skeleton";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import EditProfileForm from "../forms/profile";
 import ProfileImageUploader from "../ProfileImageUploader";
+import PricingPlans from "./PricingPlans";
+import Link from "next/link";
 
 function UserProfile() {
     const user = useSessionUser()
@@ -17,6 +19,8 @@ function UserProfile() {
     if (!user) { 
         return <Skeleton className="w-10 aspect-square rounded-full" />
     }
+
+    
 
     
     return ( <DropdownMenu>
@@ -41,10 +45,27 @@ function UserProfile() {
                 
             </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem >
-                <Sparkles /> Upgrade to Pro
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            
+                {user.planType === "free" && (<>
+                    <Dialog>
+                    <DialogTrigger asChild>
+                        <DropdownMenuItem onSelect={(e) => e.preventDefault()}><Sparkles /> Upgrade to Pro</DropdownMenuItem>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle className="flex gap-2 items-center"><Files />Subscription Plans</DialogTitle>
+                            <DialogDescription>Find the right plan that suits your needs</DialogDescription>
+                        </DialogHeader>
+
+                        <PricingPlans currentPlan={user.planType}/>
+                        
+                    </DialogContent>
+                </Dialog>
+                
+          
+            <DropdownMenuSeparator />   
+                </>)}
+                
             
 
                 <Dialog>
@@ -61,10 +82,16 @@ function UserProfile() {
                     </DialogContent>
                 </Dialog>
                 
-           
-            <DropdownMenuItem >
-                <Wallet /> Billing
+           {user.planType !== "free" &&  <DropdownMenuItem asChild >
+                <Link href={`https://billing.stripe.com/p/login/test_9AQaH4fyu65U23KdQQ?prefilled_email=${user.email}`} target="_blank"><Wallet /> Billing</Link>
+                
             </DropdownMenuItem>
+            }
+
+            <DropdownMenuItem >
+                <Handshake /> Community
+            </DropdownMenuItem>
+           
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut({
                 callbackUrl : "/signin"

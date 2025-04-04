@@ -1,14 +1,15 @@
 
+import { userPlanEnum, userRoleEnum } from "@/db/schema";
 import { DefaultSession } from "next-auth"
 
 
-type UserRole = typeof User['role'];
 export type  ExtendedUser = DefaultSession["user"] & { 
-    role : UserRole, 
+    role : string, 
     id : string,
     username : string,
     image : string, 
-    isOauth : boolean
+    isOauth : boolean, 
+    planType : string
     
 }
 

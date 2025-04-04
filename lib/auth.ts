@@ -52,8 +52,9 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
           session.user.image = token.image as string 
           session.user.id = token.id as string 
           session.user.isOauth = token.isOauth as boolean
-          session.user.role = token.role as UserRole
+          session.user.role = token.role as string
           session.user.username = token.username as string 
+          session.user.planType = token.planType as string
 
       }
       return session
@@ -80,7 +81,8 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
         isOauth : user?.isOauth, 
         image : user?.image, 
         email : user?.email, 
-        role : user?.role
+        role : user?.role, 
+        planType : user?.plan
 
       }
     }

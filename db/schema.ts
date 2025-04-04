@@ -8,13 +8,13 @@ import {
   pgEnum
 } from "drizzle-orm/pg-core"
 import type { AdapterAccountType } from "next-auth/adapters"
+import { env } from "@/data/env/server";
+import { drizzle } from "drizzle-orm/neon-http";
 
-
-
-
+export const db = drizzle(env.AUTH_DRIZZLE_URL)
 
 export const userRoleEnum = pgEnum("user_role", ["admin", "user", "editor"]);
-
+export const userPlanEnum = pgEnum("user_plan", ["free", "basic", "premium"]);
 
 export const users = pgTable("user", {
   id: text("id")
@@ -26,6 +26,8 @@ export const users = pgTable("user", {
   role: userRoleEnum("role").default("user").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   username : text("username"), 
+  plan : userPlanEnum("plan").default("free").notNull(),
+  projectsLeft : integer("projectsLeft").notNull().default(4),  
   hashedPassword : text("hashedPassword"), 
   isOauth : boolean("isOauth"),
   image: text("image"),
@@ -90,3 +92,22 @@ export const passwordTokens = pgTable(
     
   )
  
+
+  export const projects = pgTable(
+    "projects",
+    {
+      id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+      
+      name : text("name").notNull(),
+      summary : text("summary").notNull(), 
+      content : text("content"), 
+      userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }), 
+      pdfUrl: text("pdfUrl").notNull(),
+      createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+     
+    },
+
+    
+  )

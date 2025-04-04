@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Sofia_Sans } from "next/font/google";
+import { Poppins, Sofia_Sans } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ModeToggle } from "@/components/ModeToggle";
 import { Toaster } from 'react-hot-toast';
+import Navbar from "@/components/common/Navbar";
 
 const sofiaSans = Sofia_Sans({
-  variable: "--font-sofia-sans",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-mono",
+const geistMono = Poppins({
+  variable: "--font-serif",
+  weight : ["400","500","800"],
   subsets: ["latin"],
 });
 
@@ -42,16 +43,13 @@ export default function RootLayout({
         >
           
         <SessionProvider>
-         
+          <Navbar />
           {authModal}
           {children}
           <Toaster />
   
         </SessionProvider>
 
-        <div className="fixed bottom-4 right-4">
-          <ModeToggle />
-        </div>
         </ThemeProvider>
       </body>
 

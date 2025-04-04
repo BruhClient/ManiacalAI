@@ -15,7 +15,8 @@ const authRoutes = [
 
 const publicRoutes = [
     "/", 
-    "/account-verification"
+    "/account-verification", 
+    "/api/stripe/webhook"
     
     
 ]
