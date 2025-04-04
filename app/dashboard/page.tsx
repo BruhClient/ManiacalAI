@@ -40,7 +40,7 @@ async function Dashboard() {
             : 
             
             
-            <div className="grid grid-cols-1 md:grid-cols-3 px-3 py-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 px-3 py-4">
                 <AnimatePresence>
                     {projects.map(({createdAt,id,name}) => 
                         <MotionDiv key={id} initial={{opacity : 0, y: 20}} transition={{ duration: 0.2 }} animate={{opacity : 1, y: 0}} exit={{opacity : 0}}>
