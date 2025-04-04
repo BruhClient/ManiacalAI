@@ -95,7 +95,7 @@ export async function generatePDFSummary(uploadResponse: {
 
         console.log("Simplified Content!")
 
-        console.log(simplifedContent)
+        
 
       
         
@@ -111,7 +111,8 @@ export async function generatePDFSummary(uploadResponse: {
             }
         }
         
-    } catch {
+    } catch(error) {
+        console.log(error)
         await utapi.deleteFiles([key])
         return { 
             success : false , 
