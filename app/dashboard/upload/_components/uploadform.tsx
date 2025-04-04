@@ -68,15 +68,13 @@ const UploadForm = () => {
                     toast.error(res.message)
                     
                     return 
+                } else { 
+                    toast.success("PDF Summary generated.")
                 }
 
                 const {pdfText,summary,pdfUrl,key} = res.data
 
 
-                if (!res.success) { 
-                    toast.error(res.message)
-                    return
-                }
 
 
 
@@ -86,6 +84,8 @@ const UploadForm = () => {
                 if (!data.success) { 
                     toast.error(res.message)
                     return
+                } else { 
+                    toast.success("Ai Prompt generated . Almost there....")
                 }
                 
                 const result = await createProject({ 
