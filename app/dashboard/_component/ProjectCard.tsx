@@ -14,13 +14,13 @@ const ProjectCard = ({id ,name , createdAt} : {id : string,name : string,created
   return (
     
 
-        <Card key={id} className='hover:bg-muted hover:shadow-lg shadow-primary duration-150 ease-in-out transition-all'>
+        <Card key={id} className='hover:bg-muted hover:shadow-lg h-full shadow-primary duration-150 ease-in-out transition-all'>
 
         <CardHeader>
-            <CardTitle className="text-lg font-serif">{name}</CardTitle>
+            <CardTitle className="text-lg font-serif break-all">{name}</CardTitle>
             <CardDescription>{format(createdAt,"dd-MM-yyyy")}</CardDescription>
         </CardHeader>
-        <CardContent className="flex gap-2 justify-end">
+        <CardContent className="flex h-full items-end  gap-2 justify-end">
             
             <Button asChild><Link href={`/dashboard/project/${id}`}>View Project</Link></Button>
             <DeleteProjectButton id={id}/>

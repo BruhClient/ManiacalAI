@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { useUploadThing } from '@/lib/uploadthing'
 import { cn } from '@/lib/utils'
 import { UploadFormPayload, UploadFormSchema } from '@/schema/upload-form'
+import { fetchAndExtractPdfText } from '@/server/actions/langchain'
 import { generatePDFSummary, generateSimplifiedPDFContent } from '@/server/actions/pdf'
 import { createProject } from '@/server/db/projects'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,9 +29,7 @@ const UploadForm = () => {
           toast.error("PDF Upload failed. Please check your internet connection.")
           
         },
-        onUploadBegin: (data) => {
-          console.log('upload has begun for', data);
-        },
+        
       });
     const form = useForm<UploadFormPayload>({ 
         resolver : zodResolver(UploadFormSchema), 
@@ -57,10 +56,17 @@ const UploadForm = () => {
                 
                 if (!resp)  return 
 
+                const {key ,serverData : {fileUrl : pdfUrl} } = resp[0] 
+
+                
+                const pdfText = await fetchAndExtractPdfText(pdfUrl)
+
+                toast.success("PDF text extracted")
+
 
               
 
-                const res = await generatePDFSummary(resp)
+                const res = await generatePDFSummary(pdfText,key)
                 
                 
 
@@ -72,7 +78,7 @@ const UploadForm = () => {
                     toast.success("PDF Summary generated.")
                 }
 
-                const {pdfText,summary,pdfUrl,key} = res.data
+                const summary = res.data
 
 
 
@@ -87,13 +93,20 @@ const UploadForm = () => {
                 } else { 
                     toast.success("Ai Prompt generated . Almost there....")
                 }
-                
+
+                console.log({ 
+                    name, 
+                    content : data.data!, 
+                    summary , 
+                    pdfUrl, 
+                })
                 const result = await createProject({ 
                         name, 
                         content : data.data!, 
-                        summary : summary ?? "" , 
+                        summary , 
                         pdfUrl, 
                     })
+
                 
 
                 if (result.success) { 
@@ -108,8 +121,8 @@ const UploadForm = () => {
                     
 
             } catch(error) { 
-                console.log(error)
-                toast.dismiss()
+                
+                
                 toast.error("Something went wrong. Please check your internet connection")
             }
 

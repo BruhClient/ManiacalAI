@@ -33,7 +33,7 @@ const DeleteProjectButton = ({id} : {id : string}) => {
       }
   return (
             <AlertDialog>
-              <AlertDialogTrigger className='z-50' asChild><Button variant={"destructive"} className='z-50' disabled={isPending}><Trash /> Delete Project</Button></AlertDialogTrigger>
+              <AlertDialogTrigger className='z-50' asChild><Button variant={"destructive"} className='z-50' disabled={isPending}><Trash /><span className='lg:inline hidden'>Delete Project</span></Button></AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

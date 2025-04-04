@@ -84,7 +84,7 @@ export const createProject =  async ({content , name,summary , pdfUrl } : Projec
         }
 
         
-
+        
         
         await db.insert(projects).values({
             content, 
@@ -98,7 +98,7 @@ export const createProject =  async ({content , name,summary , pdfUrl } : Projec
             success : true , 
         }
     } catch(error) {
-
+        console.log(error)
         
         return {
             success : false , 

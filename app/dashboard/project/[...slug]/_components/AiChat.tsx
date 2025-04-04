@@ -77,7 +77,7 @@ const AiChat = ({messages,handleSubmit,input,handleInputChange,isLoading} : AiCh
         </div>
         <form className='flex gap-2' onSubmit={handleSubmit}>
             <Input placeholder='Enter a message' onChange={handleInputChange} value={input}/>
-            <Button size={"icon"}><Send /></Button>
+            <Button size={"icon"} disabled={isLoading}><Send /></Button>
         </form>
       </CardContent>
     </Card>
