@@ -43,9 +43,9 @@ export async function generatePDFSummary(uploadResponse: {
     }
 
     try { 
-        console.log("Extracting PDF text")
+        
         const pdfText = await fetchAndExtractPdfText(pdfUrl)
-        console.log("Done Extracting PDF Text...")
+        
 
         if (pdfText === "" ) { 
             await utapi.deleteFiles([key])
@@ -61,7 +61,7 @@ export async function generatePDFSummary(uploadResponse: {
         
         // Generate Summary using OpenAi
 
-        console.log("Generating Summary")
+        
         try { 
             summary = await generateSummaryFromOpenAI(pdfText) 
         } catch { 
@@ -76,24 +76,8 @@ export async function generatePDFSummary(uploadResponse: {
             
         }
 
-        console.log("Done generating summary")
 
-        console.log("Start Simplified Content")
-        let simplifedContent ;
-        try { 
-            simplifedContent = await generateSimplifiedContent(pdfText) 
-        } catch { 
-            await utapi.deleteFiles([key])
-            if (!summary) { 
-                return { 
-                    success : false , 
-                    message : "Failed to generate simplified content", 
-                    data : null 
-                }
-            }
-        }
 
-        console.log("Simplified Content!")
 
         
 
@@ -104,10 +88,10 @@ export async function generatePDFSummary(uploadResponse: {
             success : true , 
             message : "Summary generated successfully", 
             data : {
-              title : formatFileNameAsTitle(fileName),
               summary ,
-              pdfText : simplifedContent , 
+              pdfText ,
               pdfUrl,
+              key , 
             }
         }
         
@@ -124,5 +108,24 @@ export async function generatePDFSummary(uploadResponse: {
 
 
 
+}
+
+export async function generateSimplifiedPDFContent(pdfText : string,key : string) { 
+    let simplifedContent ;
+        try { 
+            simplifedContent = await generateSimplifiedContent(pdfText) 
+        } catch { 
+            await utapi.deleteFiles([key])
+            return { 
+                success : false , 
+                message : "Could not generate simplified content.",
+                data : null,
+            }
+        }
+
+        return { 
+            success : true , 
+            data : simplifedContent ?? "", 
+        }
 }
 

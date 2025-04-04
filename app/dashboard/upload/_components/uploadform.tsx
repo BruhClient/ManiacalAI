@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { useUploadThing } from '@/lib/uploadthing'
 import { cn } from '@/lib/utils'
 import { UploadFormPayload, UploadFormSchema } from '@/schema/upload-form'
-import { generatePDFSummary } from '@/server/actions/pdf'
+import { generatePDFSummary, generateSimplifiedPDFContent } from '@/server/actions/pdf'
 import { createProject } from '@/server/db/projects'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
@@ -70,14 +70,27 @@ const UploadForm = () => {
                     return 
                 }
 
-                const {title,pdfText,summary,pdfUrl} = res.data
-                
-                
+                const {pdfText,summary,pdfUrl,key} = res.data
 
+
+                if (!res.success) { 
+                    toast.error(res.message)
+                    return
+                }
+
+
+
+                const data = await generateSimplifiedPDFContent(pdfText,key)
+                
+                
+                if (!data.success) { 
+                    toast.error(res.message)
+                    return
+                }
                 
                 const result = await createProject({ 
                         name, 
-                        content : pdfText!, 
+                        content : data.data!, 
                         summary : summary ?? "" , 
                         pdfUrl, 
                     })
