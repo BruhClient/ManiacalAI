@@ -94,7 +94,8 @@ const UploadForm = () => {
                 }
                     
 
-            } catch { 
+            } catch(error) { 
+                console.log(error)
                 toast.dismiss()
                 toast.error("Something went wrong. Please check your internet connection")
             }
