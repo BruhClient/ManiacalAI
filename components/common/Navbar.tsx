@@ -23,8 +23,8 @@ const navLinks = [
         href : "#pricing"
     },
     {
-        name : "Demo", 
-        href : "#demo"
+        name : "Reviews", 
+        href : "#reviews"
     },
     {
         name : "Contact us", 

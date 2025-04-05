@@ -40,7 +40,7 @@ const reviews = [
 
 const Reviews = () => {
   return (
-    <div className='w-full flex justify-center flex-col items-center' id='pricing'>
+    <div className='w-full flex justify-center flex-col items-center' id='reviews'>
         
         <div className='max-w-6xl w-full flex flex-col gap-3'>
             <MotionDiv className='flex flex-col gap-2' variants={cardVariants} initial={"initial"} whileInView={"animate"}>
