@@ -47,7 +47,7 @@ const Pricing = () => {
                         </CardHeader>
                         <CardContent className='flex flex-col gap-4'>
                             <div>
-                                <span className='text-3xl font-serif font-bold'>{pricing.price}</span> /month
+                                <span className='text-3xl font-serif font-bold'>${pricing.price}</span> /month
                             </div>
                             <Button className='w-full' variant={"outline"} asChild><Link href={"/signin"}>Get Started</Link></Button>
 
