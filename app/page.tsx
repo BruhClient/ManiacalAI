@@ -15,20 +15,17 @@ export default function Home() {
     <div className="flex flex-col justify-center items-center gap-9 px-3">
       <Header />
 
-      <MotionDiv className="relative" id="demo" initial={{ opacity : 0 , y : 20}} animate={{opacity : 1 , y: 0}}>
+      <MotionDiv className="relative h-full" id="demo" initial={{ opacity : 0 , y : 20}} animate={{opacity : 1 , y: 0}}>
 
         
         <Safari
         
           url="maniacal.ai"
-          className="size-full md:block hidden"
+          className="size-full"
           videoSrc="https://videos.pexels.com/video-files/27180348/12091515_2560_1440_50fps.mp4"
         />
 
-        <Android
-          className="size-full md:hidden pl-12"
-          videoSrc="https://videos.pexels.com/video-files/14993748/14993748-uhd_1296_2304_30fps.mp4"
-        />
+        
       </MotionDiv>
       <Features />
       <Pricing />

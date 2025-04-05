@@ -11,6 +11,8 @@ import EditProfileForm from "../forms/profile";
 import ProfileImageUploader from "../ProfileImageUploader";
 import PricingPlans from "./PricingPlans";
 import Link from "next/link";
+import { Badge } from "../ui/badge";
+import { Progress } from "../ui/progress";
 
 function UserProfile() {
     const user = useSessionUser()
@@ -38,12 +40,21 @@ function UserProfile() {
                     <AvatarFallback><User/></AvatarFallback>
                 </Avatar>
                 <div>
-                    <div>{user.username}</div>
+                    <div className="flex items-center gap-1">{user.username} </div>
                     <div className="text-sm text-muted-foreground">{user.email}</div>
                 </div>
                 
                 
             </div>
+            <DropdownMenuSeparator />
+
+            <div className="px-4 pb-2">
+                <div className="text-center font-serif text-sm py-2">
+                    5 projects left !
+                </div>
+                <Progress value={100}/>
+            </div>
+            
             <DropdownMenuSeparator />
             
                 {user.planType === "free" && (<>
