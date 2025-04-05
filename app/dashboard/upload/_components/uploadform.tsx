@@ -5,17 +5,17 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import useSessionUser from '@/hooks/use-session-user'
 import { useUploadThing } from '@/lib/uploadthing'
-import { cn } from '@/lib/utils'
+import { bytesToMB, cn } from '@/lib/utils'
 import { UploadFormPayload, UploadFormSchema } from '@/schema/upload-form'
 import { fetchAndExtractPdfText } from '@/server/actions/langchain'
 import { generatePDFSummary, generateSimplifiedPDFContent } from '@/server/actions/pdf'
 import { hasPermission } from '@/server/actions/permissions'
-import { createProject, updateProjectById } from '@/server/db/projects'
-import { decrementProjectsLeft, updateUserById } from '@/server/db/users'
+import { createProject } from '@/server/db/projects'
+import { decrementProjectsLeft } from '@/server/db/users'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
-import { Loader2 } from 'lucide-react'
-import React, { useTransition } from 'react'
+import { Loader2, Upload } from 'lucide-react'
+import React, { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -24,12 +24,9 @@ const UploadForm = () => {
 
     const [isPending,startTransition] = useTransition()
     const { startUpload } = useUploadThing('pdfUploader', {
-        onClientUploadComplete: () => {
-          
-          toast.success("PDF Uploaded!")
-        },
+        
         onUploadError: (err) => {
-         
+            setLoadingState(null)
           toast.error("PDF Upload failed. Please check your internet connection.")
           
         },
@@ -37,6 +34,8 @@ const UploadForm = () => {
       });
 
     const user = useSessionUser()
+
+    const [loadingState,setLoadingState] = useState<string | null>(null)
     const form = useForm<UploadFormPayload>({ 
         resolver : zodResolver(UploadFormSchema), 
         defaultValues : { 
@@ -58,71 +57,78 @@ const UploadForm = () => {
             
             try { 
 
-                
-                const isAllowed = await hasPermission()
+                const fileSize = values.file[0].size as number
+
+
+                setLoadingState("Checking user details...")
+                const isAllowed = await hasPermission(fileSize)
                 
                 if (!isAllowed || !isAllowed.allowed) { 
                     toast.error(isAllowed.message)
+                    setLoadingState(null)
                     return
-                } else { 
-                    toast.success("User verification complete !")
-                }
+                } 
+
                 const {file,name} = UploadFormSchema.parse(values)
                 
-
+                setLoadingState("Uploading files...")
                 const resp = await startUpload([file[0]])
 
                 
-                if (!resp)  return 
+                if (!resp)  return
 
                 const {key ,serverData : {fileUrl : pdfUrl} } = resp[0] 
 
-                
+                setLoadingState("Extracting PDF Text...")
                 const pdfText = await fetchAndExtractPdfText(pdfUrl)
-
-                toast.success("PDF text extracted")
-
 
               
 
+
+              
+                setLoadingState("Generating Summary...")
                 const res = await generatePDFSummary(pdfText,key)
                 
                 
 
                 if (!res.success || !res.data) { 
                     toast.error(res.message)
+                    setLoadingState(null)
                     
                     return 
-                } else { 
-                    toast.success("PDF Summary generated.")
-                }
+                } 
 
                 const summary = res.data
 
 
 
 
-
+                setLoadingState("Generating AI Chatbot...")
                 const data = await generateSimplifiedPDFContent(pdfText,key)
                 
                 
                 if (!data.success) { 
                     toast.error(res.message)
+                    setLoadingState(null)
                     return
-                } else { 
-                    toast.success("Ai Prompt generated . Almost there....")
-                }
+                } 
+
+
+
 
                 if (user?.planType === "free" ) { 
                     const res = await decrementProjectsLeft(user!.id)
 
                     if (!res) { 
                         toast.error("Failed to create project. Please check your internet connection")
+                        setLoadingState(null)
                         return 
                     } else { 
                         queryClient.invalidateQueries({queryKey : ["projectsLeft",user.id]})
                     }
                 }
+
+                setLoadingState("Creating Project...")
 
                 
                 const result = await createProject({ 
@@ -140,8 +146,10 @@ const UploadForm = () => {
                 if (result.success) { 
                     
                     
-
+                    
                     toast.success("Project created !")
+
+                    form.setValue("name","")
                     
 
                     
@@ -150,23 +158,25 @@ const UploadForm = () => {
                     
                     toast.error("Failed to create project. Please check your internet connection")
                 }
+                setLoadingState(null)
 
                 
                     
 
             } catch(error) { 
                 
-                
+                setLoadingState(null)
                 toast.error("Something went wrong. Please check your internet connection")
             }
 
         })
 
     }
-    
+   
   return (
     <Form {...form}>
         <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
+            
             <FormField
                         control={form.control}
                         name ="name"
@@ -195,7 +205,7 @@ const UploadForm = () => {
                                     render={({field}) => (
                                         <FormItem >
                                             <FormLabel>
-                                                PDF 
+                                                PDF {field.value && `( ${bytesToMB(field.value[0].size)}MB ) `}
                                             </FormLabel>
                                             <FormControl>
                                             <Input
@@ -215,7 +225,16 @@ const UploadForm = () => {
                                                     disabled={isPending}
                                                 />
                                                 
+                                                
+                                                
+
+                                                
+
+                                                
+                                                
                                             </FormControl>
+
+                                           
                                         
                                             <FormMessage />
                                            
@@ -225,16 +244,19 @@ const UploadForm = () => {
                                         
                                     )}
                                 />
+
+                               
+                                
                 
         
         
-        <Button disabled={isPending}>
+        <Button disabled={isPending} className='flex items-center'>
             {isPending ? (
             <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {loadingState}
             </>
             ) : (
-            'Upload your PDF'
+            <><Upload /> Upload your PDF</>
             )}
         </Button>
       

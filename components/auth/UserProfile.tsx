@@ -11,7 +11,6 @@ import EditProfileForm from "../forms/profile";
 import ProfileImageUploader from "../ProfileImageUploader";
 import PricingPlans from "./PricingPlans";
 import Link from "next/link";
-import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
 import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "@/server/db/users";
@@ -88,7 +87,7 @@ function UserProfile() {
                             <DialogDescription>Find the right plan that suits your needs</DialogDescription>
                         </DialogHeader>
 
-                        <PricingPlans currentPlan={user.planType}/>
+                        <PricingPlans />
                         
                     </DialogContent>
                 </Dialog>

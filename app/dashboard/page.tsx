@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { getProjects } from "@/server/db/projects";
-import { File, FileUp, Plus } from "lucide-react";
+import { FileUp, Plus, Upload } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import ProjectCard from "./_component/ProjectCard";
@@ -34,7 +34,7 @@ async function Dashboard() {
                 <div className=" font-serif text-muted-foreground">
                     Cmon , Lets get started !
                 </div>
-                <Button className="w-full max-w-[200px]" asChild><Link href={"/dashboard/upload"} className="flex gap-2 items-center"><File /> Upload PDF</Link></Button>
+                <Button className="w-full max-w-[200px]" asChild><Link href={"/dashboard/upload"} className="flex gap-2 items-center"><Upload /> Upload PDF</Link></Button>
             </div>
             
             : 

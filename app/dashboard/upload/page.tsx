@@ -8,9 +8,9 @@ import { MotionDiv } from '@/lib/motion-wrapper'
 
 const UploadPage = () => {
   return (
-    <MotionDiv initial={{ opacity : 0 , y : 5}} animate={{opacity : 1 , y: 0}} className='w-full h-[90vh] flex justify-center items-center flex-col gap-5'>
+    <MotionDiv initial={{ opacity : 0 , y : 5}} animate={{opacity : 1 , y: 0}} className='w-full h-[90vh]  flex justify-center items-center flex-col gap-5'>
 
-      <Card>
+      <Card className='mx-3'>
         <CardHeader>
           
           <CardTitle className='text-lg font-serif flex items-center gap-2'><FileUpIcon /> Upload your PDF</CardTitle>

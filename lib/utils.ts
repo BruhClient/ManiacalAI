@@ -29,3 +29,8 @@ export function formatFileNameAsTitle(fileName: string): string {
 export function capitalizeFirstLetter(val : string) {
   return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
+
+export function bytesToMB(bytes: number): string {
+  const mb = 1024 * 1024; // Number of bytes in 1 MB
+  return (bytes / mb).toFixed(2);
+}
