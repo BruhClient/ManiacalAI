@@ -1,16 +1,27 @@
 import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { env } from "@/data/env/server";
 import { pricingTypes } from "@/data/pricing";
 import { db, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-
+async function getRawBody(readable: ReadableStream<Uint8Array>): Promise<Buffer> {
+    const reader = readable.getReader();
+    const chunks: Uint8Array[] = [];
+  
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) chunks.push(value);
+    }
+  
+    return Buffer.concat(chunks);
+  }
   
 
-export async function POST(req : Request) { 
+export async function POST(req : NextRequest) { 
 
     const endpointSecret = env.STRIPE_WEBHOOK_KEY;
     const signature = (await headers()).get("stripe-signature") as string
@@ -22,7 +33,7 @@ export async function POST(req : Request) {
     
     let event: Stripe.Event; 
     try { 
-        const rawBody = await req.text();
+        const rawBody = await getRawBody(req.body!);
 
         event = stripe.webhooks.constructEvent(rawBody,signature,endpointSecret)
     } catch (error) { 
