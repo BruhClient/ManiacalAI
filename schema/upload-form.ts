@@ -4,7 +4,6 @@ import {z} from "zod"
 export const UploadFormSchema = z.object({ 
     file : z
     .any()
-    .refine((files) => files?.length == 1, "PDF is required.")
     .refine(
       (files) => {
        

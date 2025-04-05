@@ -65,7 +65,7 @@ const UploadForm = () => {
                 
                 if (!isAllowed || !isAllowed.allowed) { 
                     toast.error(isAllowed.message)
-                    setLoadingState(null)
+                    
                     return
                 } 
 
@@ -93,7 +93,7 @@ const UploadForm = () => {
 
                 if (!res.success || !res.data) { 
                     toast.error(res.message)
-                    setLoadingState(null)
+                    
                     
                     return 
                 } 
@@ -109,7 +109,7 @@ const UploadForm = () => {
                 
                 if (!data.success) { 
                     toast.error(res.message)
-                    setLoadingState(null)
+                    
                     return
                 } 
 
@@ -121,7 +121,7 @@ const UploadForm = () => {
 
                     if (!res) { 
                         toast.error("Failed to create project. Please check your internet connection")
-                        setLoadingState(null)
+                        
                         return 
                     } else { 
                         queryClient.invalidateQueries({queryKey : ["projectsLeft",user.id]})
@@ -138,34 +138,20 @@ const UploadForm = () => {
                         pdfUrl, 
                 })
 
-
-                
-
-                
-
                 if (result.success) { 
-                    
-                    
-                    
+
                     toast.success("Project created !")
 
                     form.setValue("name","")
-                    
 
-                    
-                    
                 } else { 
                     
                     toast.error("Failed to create project. Please check your internet connection")
                 }
-                setLoadingState(null)
-
-                
-                    
 
             } catch(error) { 
                 
-                setLoadingState(null)
+               
                 toast.error("Something went wrong. Please check your internet connection")
             }
 
