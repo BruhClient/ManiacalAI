@@ -37,7 +37,7 @@ export async function POST(req : Request) {
         switch (eventType) { 
             case "checkout.session.completed" : { 
 
-                console.log("-------------CHECKOUT----------------")
+                
                
                 
                 const session =  await stripe.checkout.sessions.retrieve(
@@ -76,27 +76,7 @@ export async function POST(req : Request) {
                 }
 
             }
-            case "customer.subscription.updated" : {
-
-                console.log("-------------SUBSCRIPTION UPDATED----------------")
-                // @ts-expect-error
-                const session =  await stripe.subscriptions.retrieve(
-                    data.id, 
-                ) as {customer : string, plan : {id : string} }
-                const customer = await stripe.customers.retrieve(session.customer) as { email : string}
-                const priceId = session.plan.id
-                
-                const plan = pricingTypes.find((type) => type.priceId === priceId )!.name.toLowerCase() as "free" | "basic" | "premium"
-
-                console.log("-----------Plan--------------",plan)
-                await db.update(users).set({
-                    plan,
-
-
-                }).where(eq(users.email,customer.email))
-                
-
-            }
+            
             case "customer.subscription.deleted" : {
                 
 
