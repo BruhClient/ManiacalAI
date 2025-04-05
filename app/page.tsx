@@ -14,19 +14,6 @@ export default function Home() {
     <>
     <div className="flex flex-col justify-center items-center gap-9 px-3">
       <Header />
-
-      <MotionDiv className="relative h-full" id="demo" initial={{ opacity : 0 , y : 20}} animate={{opacity : 1 , y: 0}}>
-
-        
-        <Safari
-        
-          url="maniacal.ai"
-          className="size-full"
-          videoSrc="https://videos.pexels.com/video-files/27180348/12091515_2560_1440_50fps.mp4"
-        />
-
-        
-      </MotionDiv>
       <Features />
       <Pricing />
 
