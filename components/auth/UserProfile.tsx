@@ -13,14 +13,24 @@ import PricingPlans from "./PricingPlans";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
+import { useQuery } from "@tanstack/react-query";
+import { getUserById } from "@/server/db/users";
 
 function UserProfile() {
     const user = useSessionUser()
     
+
+    const {data,isLoading} = useQuery({ 
+        queryKey : ["projectsLeft",user?.id], 
+        queryFn : async () => await getUserById(user?.id!),
+        enabled : !!user
+    })
     
     if (!user) { 
         return <Skeleton className="w-10 aspect-square rounded-full" />
     }
+
+    
 
     
 
@@ -46,14 +56,24 @@ function UserProfile() {
                 
                 
             </div>
-            <DropdownMenuSeparator />
 
-            <div className="px-4 pb-2">
-                <div className="text-center font-serif text-sm py-2">
-                    5 projects left !
+            {user.planType  === "free"  && <>
+                <DropdownMenuSeparator />
+
+                <div className="px-4 pb-2">
+                    <div className="text-center font-serif text-sm py-2">
+
+                        {data?.projectsLeft ? <span>Free Quota {`( ${data.projectsLeft} projects left ! )`}</span> : <span>Free Quota used up !</span>}
+                        
+                    </div>
+
+                    {
+                        data?.projectsLeft ?<Progress value={100 - data?.projectsLeft * 25} /> : <Progress value={100} />
+                    }
+                    
                 </div>
-                <Progress value={100}/>
-            </div>
+            </>}
+            
             
             <DropdownMenuSeparator />
             

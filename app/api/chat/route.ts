@@ -17,8 +17,8 @@ export async function POST(req : Request) {
 
         const systemMessage : CoreSystemMessage = { 
             role : "system", 
-            content : " You are a intelligent Learning assistant . You answer the user based on the document that they have uploaded. You also keep your answers to less than 200 words. You are given the outline for the docuemnt . \n " 
-            + "The document outline : \n\n" 
+            content : " You are a intelligent Learning assistant. You keep your answers concise and less than 200 words. You are given a document that the user has uploaded. . \n " 
+            + "The document : \n\n" 
             + body.content
             
         }
@@ -42,7 +42,7 @@ export async function POST(req : Request) {
 
     } catch(error) { 
 
-        console.log(error)
+    
         return NextResponse.json({error : "Internal server error"},{status : 500})
     }
 }

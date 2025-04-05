@@ -2,9 +2,12 @@ import React from 'react'
 import {MotionProps} from "motion/react"
 import { MotionDiv } from '@/lib/motion-wrapper'
 import { cn } from '@/lib/utils'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { Skeleton } from '../ui/skeleton'
-import { AnimatedBeamDemo } from './Beam'
+import { Bot, Send, User } from 'lucide-react'
+import { Separator } from '../ui/separator'
+import { Input } from '../ui/input'
+import { Button } from '../ui/button'
 
 
 
@@ -161,10 +164,45 @@ const DetailBlock = async () => {
                     Ask questions, get instant insights, and interact with your documents like never before.
                 </div>
 
-                <div className='flex-1 flex items-center justify-center'>
+                <div className='flex-1 flex flex-col '>
                 
-                    
-                    <AnimatedBeamDemo />
+                        <Card>
+                            <CardHeader>
+                                <div className='flex gap-3 items-center'>
+                            
+                                    <div className='bg-primary animate-pulse p-2 rounded-full'>
+                                        <Bot />
+                                    </div>
+                                    
+                                    <div className='flex flex-col gap-1 pt-2'>
+                                        <CardTitle className='font-serif'>Maniacal Ai Bot</CardTitle>
+                                        <CardDescription className='text-sm'>AI Assistant</CardDescription>
+                                    </div>
+                                
+                                </div>
+                                <Separator className='mt-2' />
+                            </CardHeader>
+                            <CardContent className='flex flex-col gap-3'>
+                                <div className='w-full text-primary-foreground flex justify-end items-center gap-2 font-serif' >
+                
+                                    <div className='w-fit bg-primary px-2 py-1 rounded-lg whitespace-pre-line text-sm'>What is this document about ?</div>
+                                    <User />
+                                </div>
+                                <div  className='w-full flex justify-start items-center gap-2 font-serif '>
+                                                <Bot className='text-foreground' />
+                                                <div className='w-fit bg-secondary px-2 text-sm py-1 rounded-lg whitespace-pre-line '>The document is a comprehensive guide on conducting geographical investigations, likely intended for educational purposes. It aims to teach students about geography fieldwork and research methods. The guide covers learning outcomes related to living with rivers and urban living, introduces fieldwork and research processes, and details data collection, presentation, and evaluation methods</div>
+                                </div>
+
+                                
+
+                            </CardContent>
+                            <CardFooter className='flex gap-2'>
+                                <Input disabled={true} placeholder='Enter a message'/>
+                                <Button size={"icon"} disabled={true}><Send /></Button>
+                            </CardFooter>
+                        
+                        </Card>
+                        
                 
                 
                     

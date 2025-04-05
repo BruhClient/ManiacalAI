@@ -1,4 +1,4 @@
-
+"use server"
 import { db, users } from "@/db/schema"
 import { eq, InferModel } from "drizzle-orm"
 
@@ -44,12 +44,12 @@ export const getUserByUsername = async (username : string) => {
 
 export const updateUserById = async (id : string, options :  User) => { 
     try { 
-        await db.update( users).set({
+        const user = await db.update( users).set({
             ...options
-        }).where(eq(users.id, id))
+        }).where(eq(users.id, id)).returning()
 
 
-        const user = await db.select().from(users).where(eq(users.id ,id)).limit(1);
+        
 
 
        
@@ -62,17 +62,17 @@ export const updateUserById = async (id : string, options :  User) => {
 
 export const updateUserByEmail = async (email : string, options :  User) => { 
     try { 
-        await db.update( users).set({
+        const res = await db.update( users).set({
             ...options
-        }).where(eq(users.email, email))
+        }).where(eq(users.email, email)).returning()
 
 
-        const user = await db.select().from(users).where(eq(users.email ,email)).limit(1);
+        
 
 
        
 
-        return user[0]
+        return res[0]
     } catch { 
         return null
     }
@@ -88,6 +88,27 @@ export const createUser = async (email : string , options : User) => {
         })
 
         return user
+    } catch { 
+        return null
+    }
+}
+
+export const decrementProjectsLeft = async (id : string) =>  { 
+    try { 
+
+        const prevUser = await getUserById(id)
+        if (!prevUser) { 
+            return null
+        }
+
+        const user = await db.update( users).set({
+            projectsLeft :prevUser?.projectsLeft - 1
+        }).where(eq(users.id, id)).returning()
+
+
+       
+
+        return user[0]
     } catch { 
         return null
     }

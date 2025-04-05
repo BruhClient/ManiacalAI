@@ -16,14 +16,18 @@ import { Button } from '@/components/ui/button'
 import { deleteProject } from '@/server/db/projects'
 import toast from 'react-hot-toast'
 import { Trash } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 const DeleteProjectButton = ({id} : {id : string}) => {
 
     const [isPending,startTransition] = useTransition()
+
+    const router = useRouter()
     const onDelete =  () => { 
         startTransition(() => { 
           deleteProject(id).then((data) => { 
             if (data.success) { 
               toast.success("Project Deleted !")
+              router.push("/dashboard")
             } else { 
               toast.error("Something went wrong. Please check your internet connection.")
             }

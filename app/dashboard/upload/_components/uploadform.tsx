@@ -3,13 +3,17 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import useSessionUser from '@/hooks/use-session-user'
 import { useUploadThing } from '@/lib/uploadthing'
 import { cn } from '@/lib/utils'
 import { UploadFormPayload, UploadFormSchema } from '@/schema/upload-form'
 import { fetchAndExtractPdfText } from '@/server/actions/langchain'
 import { generatePDFSummary, generateSimplifiedPDFContent } from '@/server/actions/pdf'
-import { createProject } from '@/server/db/projects'
+import { hasPermission } from '@/server/actions/permissions'
+import { createProject, updateProjectById } from '@/server/db/projects'
+import { decrementProjectsLeft, updateUserById } from '@/server/db/users'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useQueryClient } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import React, { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
@@ -31,6 +35,8 @@ const UploadForm = () => {
         },
         
       });
+
+    const user = useSessionUser()
     const form = useForm<UploadFormPayload>({ 
         resolver : zodResolver(UploadFormSchema), 
         defaultValues : { 
@@ -40,6 +46,10 @@ const UploadForm = () => {
 
         }
     })
+
+    const queryClient = useQueryClient()
+    
+
     const onSubmit = (values : UploadFormPayload) => {
         
         
@@ -47,7 +57,16 @@ const UploadForm = () => {
 
             
             try { 
+
                 
+                const isAllowed = await hasPermission()
+                
+                if (!isAllowed || !isAllowed.allowed) { 
+                    toast.error(isAllowed.message)
+                    return
+                } else { 
+                    toast.success("User verification complete !")
+                }
                 const {file,name} = UploadFormSchema.parse(values)
                 
 
@@ -94,30 +113,45 @@ const UploadForm = () => {
                     toast.success("Ai Prompt generated . Almost there....")
                 }
 
-                console.log({ 
-                    name, 
-                    content : data.data!, 
-                    summary , 
-                    pdfUrl, 
-                })
+                if (user?.planType === "free" ) { 
+                    const res = await decrementProjectsLeft(user!.id)
+
+                    if (!res) { 
+                        toast.error("Failed to create project. Please check your internet connection")
+                        return 
+                    } else { 
+                        queryClient.invalidateQueries({queryKey : ["projectsLeft",user.id]})
+                    }
+                }
+
+                
                 const result = await createProject({ 
                         name, 
                         content : data.data!, 
                         summary , 
                         pdfUrl, 
-                    })
+                })
+
+
+                
 
                 
 
                 if (result.success) { 
                     
+                    
+
                     toast.success("Project created !")
-                    form.reset()
+                    
+
+                    
                     
                 } else { 
                     
                     toast.error("Failed to create project. Please check your internet connection")
                 }
+
+                
                     
 
             } catch(error) { 
@@ -161,7 +195,7 @@ const UploadForm = () => {
                                     render={({field}) => (
                                         <FormItem >
                                             <FormLabel>
-                                                PDF
+                                                PDF 
                                             </FormLabel>
                                             <FormControl>
                                             <Input

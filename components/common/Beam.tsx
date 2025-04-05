@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef, useRef } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { AnimatedBeam } from "../ui/magicui/animatedBeam";
@@ -28,7 +28,13 @@ export function AnimatedBeamDemo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const div1Ref = useRef<HTMLDivElement>(null);
   const div2Ref = useRef<HTMLDivElement>(null);
+  const [isMounted,setIsMounted] = useState(false)
 
+  useEffect(() => {
+    setIsMounted(true)
+  },[])
+
+  if (!isMounted) return null
   return (
     <div
       className="relative flex w-full max-w-[500px] items-center justify-center overflow-hidden p-10"

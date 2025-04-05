@@ -3,7 +3,7 @@
 import { db, projects } from "@/db/schema"
 import { auth } from "@/lib/auth"
 import { utapi } from "@/lib/utapi"
-import { eq } from "drizzle-orm"
+import { eq, InferModel } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
 
@@ -86,16 +86,17 @@ export const createProject =  async ({content , name,summary , pdfUrl } : Projec
         
         
         
-        await db.insert(projects).values({
+        const res = await db.insert(projects).values({
             content, 
             name, 
             summary , 
             userId : session.user.id , 
             pdfUrl ,
-        })
+        }).returning()
         revalidatePath("/dashboard")
         return {
-            success : true , 
+            success : true ,
+            data : res[0]
         }
     } catch(error) {
         console.log(error)
@@ -103,5 +104,25 @@ export const createProject =  async ({content , name,summary , pdfUrl } : Projec
         return {
             success : false , 
         }
+    }
+}
+
+type project = Partial<InferModel<typeof projects>>;
+
+export const updateProjectById = async (id : string, options :  project) => { 
+    try { 
+        await db.update( projects).set({
+            ...options
+        }).where(eq(projects.id, id))
+
+
+        const user = await db.select().from(projects).where(eq(projects.id ,id)).limit(1);
+
+
+       
+
+        return user[0]
+    } catch { 
+        return null
     }
 }

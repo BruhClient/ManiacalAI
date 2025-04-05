@@ -39,7 +39,7 @@ export async function generateSimplifiedContent (pdfText: string) {
         { role: 'system', content: "You are a analyst who is able to break down large documents into small and digestable parts. You are able to simplify large amount of text without compromising the meaning . " },
         {
           role: 'user',
-          content: "Simplify this document . Keep it simple, understandable and as short as possible. Put emphasis on the main points . You are creating a outline for a chatbot . Include the possible author of the document . .The document : \n\n" + pdfText
+          content: "Simplify this document . Keep it simple, understandable and as short as possible. Put emphasis on the main points . Include the possible author of the document . .The document : \n\n" + pdfText
           ,
         },
       ],

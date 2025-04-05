@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from 'react-hot-toast';
 import Navbar from "@/components/common/Navbar";
+import ReactQueryProvider from "@/components/ReactQueryProvider";
 
 const sofiaSans = Sofia_Sans({
   variable: "--font-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body
         className={`${sofiaSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
+        <ReactQueryProvider>
         <ThemeProvider 
         attribute="class"
         defaultTheme="system"
@@ -51,6 +53,7 @@ export default function RootLayout({
         </SessionProvider>
 
         </ThemeProvider>
+        </ReactQueryProvider>
       </body>
 
       

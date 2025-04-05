@@ -55,7 +55,7 @@ const AiChat = ({messages,handleSubmit,input,handleInputChange,isLoading} : AiCh
             {messages.map((message) => {
 
             if (message.role === "assistant") { 
-                return <MotionDiv initial={{ opacity : 0 , y : 20}} animate={{opacity : 1 , y: 0}}  className='w-full text-primary-foreground flex justify-start items-center gap-2 font-serif ' key={message.id}>
+                return <MotionDiv initial={{ opacity : 0 , y : 20}} animate={{opacity : 1 , y: 0}}  className='w-full flex justify-start items-center gap-2 font-serif ' key={message.id}>
                 <Bot className='text-foreground' />
                 <div className='w-fit bg-secondary px-2 py-1 rounded-lg whitespace-pre-line '>{message.content}</div>
             </MotionDiv>
