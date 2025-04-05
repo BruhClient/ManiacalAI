@@ -1,7 +1,6 @@
 import { MotionDiv } from '@/lib/motion-wrapper'
 import React from 'react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
-import { User } from 'lucide-react'
+import { Card, CardDescription ,CardTitle } from '../ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 const cardVariants = {
     initial : { 
