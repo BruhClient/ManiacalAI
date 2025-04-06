@@ -18,17 +18,14 @@ export async function changeProfilePic(imageUrl : string) {
     }
 
     try { 
-        const prevFileKey = extractFileKey(session.user.image)
 
-        if (prevFileKey) { 
-            await utapi.deleteFiles([prevFileKey]);
+        if (session.user.image) { 
+            const prevFileKey = extractFileKey(session.user.image)
+            if (prevFileKey) { 
+                await utapi.deleteFiles([prevFileKey]);
+            }
         }
-        
-    
-    
-    
-    
-    
+
         updateUserByEmail(session.user.email!,{
             image : imageUrl,
         })
@@ -39,6 +36,8 @@ export async function changeProfilePic(imageUrl : string) {
             success : "Profile image uploaded successfully"
         }
     } catch { 
+
+        
         return { 
             error : "Something went wrong"
         }

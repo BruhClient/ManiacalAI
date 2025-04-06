@@ -34,6 +34,7 @@ export const login = async (data : SignInPayload ) => {
 
     if (!existingUser.emailVerified) { 
             const verificationToken = await generateVerificationToken(formattedEmail)
+            
             await sendVerificationEmail(verificationToken.email,verificationToken.token)
             return {error : `User has yet to been verified . Sending confirmation email to ${formattedEmail}`}
     }

@@ -10,8 +10,8 @@ import Link from "next/link";
 async function AccountVerificationPage({params} : {params : Promise<{slug : string}>}) {
 
     const param = await params
-    const token = param.slug
-
+    const token = param.slug[0]
+    
     const verificationToken = await getVerificationTokenByToken(token)
 
 
@@ -57,7 +57,7 @@ async function AccountVerificationPage({params} : {params : Promise<{slug : stri
 
 
 
-    return <div className="fixed top-0 w-full h-screen flex justify-center items-center">
+    return <div className="fixed top-0 w-full h-screen flex justify-center items-center z-[-5]">
 
         <Card>
             <CardHeader>

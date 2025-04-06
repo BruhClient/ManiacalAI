@@ -13,7 +13,7 @@ const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>})
 
     const project = await getProject(id)
     const session = await auth()
-    
+   
     if (!project) { 
       if (session) { 
         redirect("/dashboard")
@@ -36,6 +36,8 @@ const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>})
       }
 
     }
+
+
     const user = await  getUserById(project.userId)
 
     if (!user) { 
