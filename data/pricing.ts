@@ -10,8 +10,8 @@ export const pricingTypes = [
          numOfProjects : "4" , 
          discounts : "", 
          support : true , 
-         AiAnaysis : true , 
-         community : false , 
+         AiAnaysis : false , 
+         sharableLinks : false , 
          isPopular : false, 
          description : "For highschoolers"
 
@@ -26,7 +26,7 @@ export const pricingTypes = [
         support : true , 
         link : "https://buy.stripe.com/test_00g3dT56b91odkA6op", 
         AiAnaysis : true , 
-        community : true , 
+        sharableLinks : true , 
         isPopular : true, 
         description : "For college students"
 
@@ -41,7 +41,7 @@ export const pricingTypes = [
     discounts : 100,
     link : "https://buy.stripe.com/test_00g3dT2Y3elIbcs288",
     AiAnaysis : true , 
-    community : true , 
+    sharableLinks : true , 
     isPopular : false, 
     description : "For a very dedicated individual"
 

@@ -34,9 +34,6 @@ const PricingCard = ({pricing,link,linkText,disabled = false} : {pricing : Prici
     
                                 <div className='flex flex-col gap-2 py-5 px-1'>
                                     <div className='flex items-center text-lg gap-3 font-serif '>
-                                        {pricing.AiAnaysis ? <Check /> : <X />} Ai Chat
-                                    </div>
-                                    <div className='flex items-center text-lg gap-3 font-serif '>
                                         <Check /> {pricing.numOfProjects} projects
                                     </div>
                                     <div className='flex items-center text-lg gap-3 font-serif '>
@@ -46,8 +43,12 @@ const PricingCard = ({pricing,link,linkText,disabled = false} : {pricing : Prici
                                         <Check /> {pricing.fileSize}MB File Upload
                                     </div>
                                     <div className='flex items-center text-lg gap-3 font-serif '>
-                                        {pricing.community ? <Check /> : <X />} Community
+                                        {pricing.sharableLinks ? <Check /> : <X />} Sharable links
                                     </div>
+                                    <div className='flex items-center text-lg gap-3 font-serif '>
+                                        {pricing.AiAnaysis ? <Check /> : <X />} Unlimited Ai Chats
+                                    </div>
+                                    
 
                                     
                                 </div>
