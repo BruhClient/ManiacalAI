@@ -6,25 +6,44 @@ import { env } from "@/data/env/server";
 import { pricingTypes } from "@/data/pricing";
 import { db, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+
+async function getRawBody(readable: ReadableStream<Uint8Array>): Promise<Buffer> {
+    const reader = readable.getReader();
+    const chunks: Uint8Array[] = [];
+  
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) chunks.push(value);
+    }
+  
+    return Buffer.concat(chunks);
+  }
   
 
-export async function POST(req : Request) { 
+export async function POST(req : NextRequest) { 
 
     const endpointSecret = env.STRIPE_WEBHOOK_KEY;
-
-    const sig = req.headers.get('stripe-signature') as string
     
+    const signature = (await headers()).get("stripe-signature") as string
 
-    if (!sig || !endpointSecret) {
+    if (!signature || !endpointSecret) {
         
         return NextResponse.json({ error: "Missing Stripe signature or secret" }, { status: 400 });
     }
     
     let event: Stripe.Event; 
     try { 
-        const rawBody = await req.text();
 
-        event = stripe.webhooks.constructEvent(rawBody,sig,endpointSecret)
+        console.log("ENDPOINT SECRET : " , endpointSecret)
+
+        console.log(signature)
+        
+        const rawBody = await getRawBody(req.body!);
+
+        console.log(rawBody)
+
+        event = stripe.webhooks.constructEvent(rawBody,signature,endpointSecret)
     } catch (error) { 
         console.log(error)
         return new NextResponse("invalid signature",{status : 400})
