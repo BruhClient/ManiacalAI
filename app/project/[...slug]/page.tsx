@@ -45,6 +45,9 @@ const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>})
     }
 
 
+
+
+
     
 
 
@@ -54,7 +57,7 @@ const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>})
 
 
   return (
-    <ProjectAuth project={project} isOwner={isOwner} OwnerEmail={user.email}/>
+    <ProjectAuth project={project} isOwner={isOwner} OwnerEmail={user.email} OwnerAvatar={user.image} />
   )
 }
 
