@@ -44,7 +44,7 @@ export async function generateSimplifiedContent (pdfText: string) {
         },
       ],
       temperature: 0.7,
-      max_tokens: 100,
+      max_tokens: 200,
     });
     return completion.choices[0].message.content;
   } catch (error: any) {

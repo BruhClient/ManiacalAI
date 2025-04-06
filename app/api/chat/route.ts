@@ -19,7 +19,9 @@ export async function POST(req : Request) {
             role : "system", 
             content : " You are a intelligent Learning assistant. You keep your answers concise and less than 200 words. You are given a document that the user has uploaded. . \n " 
             + "The document : \n\n" 
-            + body.content
+            + body.content + 
+            "\n\n You are also given a brief summary of the document. The Summary : \n\n"  + 
+            body.summary
             
         }
         

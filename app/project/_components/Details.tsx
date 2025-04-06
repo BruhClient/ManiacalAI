@@ -20,6 +20,7 @@ const Details = ({summary , content,createdAt , isOwner  } : {summary :  string,
         api : "/api/chat", 
         body : {
             content : content, 
+            summary : summary, 
         }
     })
     const  [mode,setMode] = useState("Summary")
