@@ -8,8 +8,12 @@ import { revalidatePath, revalidateTag, unstable_cacheTag } from "next/cache"
 
 
 export const getProjects = async (userId : string) => { 
+    "use cache"
     
+    unstable_cacheTag(`Projects ${userId}`)
     try { 
+
+        
         const res = await db.select().from(projects).where(eq(projects.userId,userId))
         
         return res
@@ -21,7 +25,7 @@ export const getProjects = async (userId : string) => {
 
 
 export const getProject = async (id : string) => { 
-    
+    "use cache"
 
     unstable_cacheTag(`Project ${id}`)
     try { 
@@ -95,7 +99,9 @@ export const createProject =  async ({content , name,summary , pdfUrl } : Projec
             userId : session.user.id , 
             pdfUrl ,
         }).returning()
-        revalidatePath("/dashboard")
+
+
+         revalidateTag(`Projects ${session.user.id}`)
         return {
             success : true ,
             data : res[0]

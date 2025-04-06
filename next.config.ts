@@ -5,7 +5,10 @@ const nextConfig: NextConfig = {
   images : {
     domains : ["lh3.googleusercontent.com"]
   },
-  
+  experimental: { 
+    
+    useCache: true,
+  },
   eslint : {
     ignoreDuringBuilds : true
   }, 
