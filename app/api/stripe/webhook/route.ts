@@ -12,10 +12,10 @@ export async function POST(req : Request) {
 
     const endpointSecret = env.STRIPE_WEBHOOK_KEY;
 
+    const sig = req.headers.get('stripe-signature') as string
     
-    const signature = (await headers()).get("stripe-signature") as string
 
-    if (!signature || !endpointSecret) {
+    if (!sig || !endpointSecret) {
         
         return NextResponse.json({ error: "Missing Stripe signature or secret" }, { status: 400 });
     }
@@ -24,7 +24,7 @@ export async function POST(req : Request) {
     try { 
         const rawBody = await req.text();
 
-        event = stripe.webhooks.constructEvent(rawBody,signature,endpointSecret)
+        event = stripe.webhooks.constructEvent(rawBody,sig,endpointSecret)
     } catch (error) { 
         console.log(error)
         return new NextResponse("invalid signature",{status : 400})
