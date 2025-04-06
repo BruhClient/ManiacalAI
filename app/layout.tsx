@@ -19,7 +19,7 @@ const geistMono = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Maniacal.io",
+  title: "Maniacal.ai",
   description: "Ai PDF Summarizer with chat",
   
 };
