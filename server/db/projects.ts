@@ -8,7 +8,7 @@ import { revalidatePath, revalidateTag, unstable_cacheTag } from "next/cache"
 
 
 export const getProjects = async (userId : string) => { 
-    "use cache"
+    
     try { 
         const res = await db.select().from(projects).where(eq(projects.userId,userId))
         
@@ -21,7 +21,7 @@ export const getProjects = async (userId : string) => {
 
 
 export const getProject = async (id : string) => { 
-    "use cache"
+    
 
     unstable_cacheTag(`Project ${id}`)
     try { 

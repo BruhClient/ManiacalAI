@@ -1,11 +1,11 @@
 
-
 import { auth } from '@/lib/auth'
 import { getProject } from '@/server/db/projects'
 import { redirect } from 'next/navigation'
 import React from 'react'
-import ProjectAuth from './_components/ProjectAuth'
+
 import { getUserById } from '@/server/db/users'
+import ProjectAuth from '../_components/ProjectAuth'
 
 const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>}) => {
 

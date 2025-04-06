@@ -5,9 +5,9 @@ import { projects } from '@/db/schema'
 import { InferModel } from 'drizzle-orm'
 import Link from 'next/link'
 import React from 'react'
-import ShareButton from './ShareButton'
+import ShareButton from './Sharebutton'
 import DeleteProjectButton from '@/app/dashboard/_component/DeleteProjectButton'
-import Details from './details'
+import Details from './Details'
 import { ChevronLeft } from 'lucide-react'
 
 const ProjectDetails = ({project,isOwner}:{project : InferModel<typeof projects>,isOwner : boolean }) => {
