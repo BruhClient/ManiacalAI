@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from '@/components/ui/button'
-import { Copy, Save, Share } from 'lucide-react'
+import { Check, Copy, Save, Share } from 'lucide-react'
 import React, { useEffect, useState, useTransition } from 'react'
 import {
     Dialog,
@@ -48,7 +48,7 @@ const ShareButton = ({id,password,isSharable} : {id : string,password : string,i
 
 
     const onSubmit = (values : ProjectPasswordPayload) => { 
-        console.log(values)
+        
         startTransition(() => {
             updateProjectById(id,{
                 isSharable : values.isSharable, 
@@ -138,7 +138,7 @@ const ShareButton = ({id,password,isSharable} : {id : string,password : string,i
                             <span className='text-primary'>{process.env.NEXT_PUBLIC_VERCEL_URL}</span>/project/{id}
                         </div>
                         
-                        <Button type='button' size={"icon"} variant={"outline"} onClick={() => handleCopy(`${process.env.NEXT_PUBLIC_VERCEL_URL}/project/${id}`)}><Copy /></Button>
+                        <Button type='button' size={"icon"} variant={"outline"} onClick={() => handleCopy(`${process.env.NEXT_PUBLIC_VERCEL_URL}/project/${id}`)}>{copied ? <Check /> : <Copy />}</Button>
                         </div>
 
                         <div className='text-sm text-muted-foreground'>* Only basic and premium plan users can use AI chat</div>

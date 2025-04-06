@@ -10,7 +10,8 @@ import { accounts, db, users } from "@/db/schema"
 export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
   pages : {
        
-    signIn :"/signin"
+    signIn :"/signin", 
+    error : "/error"
   }, 
   events :  {
     async linkAccount ({user}) { 
