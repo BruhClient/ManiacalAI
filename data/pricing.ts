@@ -11,7 +11,7 @@ export const pricingTypes = [
          discounts : "", 
          support : true , 
          AiAnaysis : false , 
-         sharableLinks : false , 
+         sharableLinks : true , 
          isPopular : false, 
          description : "For highschoolers"
 
