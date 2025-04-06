@@ -10,6 +10,7 @@ import UserProfile from '../auth/UserProfile'
 import { Badge } from '../ui/badge'
 import { MotionDiv } from '@/lib/motion-wrapper'
 import { capitalizeFirstLetter } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
 
 
 const navLinks = [
@@ -35,23 +36,29 @@ const navLinks = [
 const Navbar = () => {
 
     const user = useSessionUser()
+    const pathname = usePathname()
+
+    
   return (
     <>
     <nav className='flex w-full justify-between py-3 px-3 items-center'>
 
 
         {/*  Logo  */}
-        <MotionDiv initial={{ opacity : 0 , y : 5}} animate={{opacity : 1 , y: 0}} className='flex items-center gap-2'>
+        <Link href={user ? "/dashboard": "/"}>
+            <MotionDiv initial={{ opacity : 0 , y : 5}} animate={{opacity : 1 , y: 0}} className='flex items-center gap-2'>
 
-            <div>
-            <Flame className='text-primary' />
-            </div>
-           
-            <div className='text-2xl'>
-                Maniacal.Ai
-            </div>
+                <div>
+                <Flame className='text-primary' />
+                </div>
             
-        </MotionDiv>
+                <div className='text-2xl'>
+                    Maniacal.Ai
+                </div>
+                
+            </MotionDiv>
+        </Link>
+        
 
         {user ? (
 
@@ -65,10 +72,14 @@ const Navbar = () => {
 
           <>
             {/*  Landing page links  */}
-            <div className='hidden md:flex gap-2'>
+
+
+
+            {pathname === "/" && <div className='hidden md:flex gap-2'>
                 {navLinks.map((navLink) => <Button key={navLink.name} variant={"link"}><Link scroll={false} onClick={(e) => smoothScroll(e, navLink.href.replace("#",""))}  href={navLink.href} className='text-muted-foreground'>{navLink.name}</Link></Button>)}
                 
-            </div>
+            </div>}
+            
 
             {/*  Auth Links  */}
             <div className='flex items-center gap-2'>

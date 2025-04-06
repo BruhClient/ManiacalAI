@@ -4,7 +4,7 @@ import { db, projects } from "@/db/schema"
 import { auth } from "@/lib/auth"
 import { utapi } from "@/lib/utapi"
 import { eq, InferModel } from "drizzle-orm"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag, unstable_cacheTag } from "next/cache"
 
 
 export const getProjects = async (userId : string) => { 
@@ -22,6 +22,8 @@ export const getProjects = async (userId : string) => {
 
 export const getProject = async (id : string) => { 
     "use cache"
+
+    unstable_cacheTag(`Project ${id}`)
     try { 
         
         const res = await db.select().from(projects).where(eq(projects.id,id))
@@ -118,6 +120,7 @@ export const updateProjectById = async (id : string, options :  project) => {
 
         const user = await db.select().from(projects).where(eq(projects.id ,id)).limit(1);
 
+        revalidateTag(`Project ${id}`)
 
        
 

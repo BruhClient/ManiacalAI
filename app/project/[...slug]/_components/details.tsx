@@ -7,8 +7,9 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import AiChat from './AiChat'
 import { useChat } from 'ai/react'
 import { MotionDiv } from '@/lib/motion-wrapper'
+import useSessionUser from '@/hooks/use-session-user'
 
-const Details = ({summary,pdfUrl , content,createdAt } : {summary :  string,pdfUrl : string,content: string,createdAt : Date}) => {
+const Details = ({summary , content,createdAt , isOwner  } : {summary :  string,content: string,createdAt : Date, isOwner : boolean}) => {
     const {
         messages , 
         input, 
@@ -22,6 +23,8 @@ const Details = ({summary,pdfUrl , content,createdAt } : {summary :  string,pdfU
         }
     })
     const  [mode,setMode] = useState("Summary")
+    const user = useSessionUser()
+   
   return (
     <>       
 
@@ -54,8 +57,13 @@ const Details = ({summary,pdfUrl , content,createdAt } : {summary :  string,pdfU
 
 {
                 mode === "Ai Chat" && (
+                    
                     <MotionDiv initial={{opacity : 0 , y : 20}} whileInView={{opacity : 1 , y: 0}} className='w-full flex justify-center '>
-                        <AiChat input={input} handleSubmit={handleSubmit} handleInputChange={handleInputChange} messages={messages} isLoading={isLoading}/>
+
+                        {
+                            <AiChat input={input} handleSubmit={handleSubmit} handleInputChange={handleInputChange} messages={messages} isLoading={isLoading} isAuthorized={isOwner || (!!user && user?.planType !== "free")}/>
+                        }
+                        
                     </MotionDiv>
                     
                 )

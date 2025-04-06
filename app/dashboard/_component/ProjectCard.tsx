@@ -22,7 +22,7 @@ const ProjectCard = ({id ,name , createdAt} : {id : string,name : string,created
         </CardHeader>
         <CardContent className="flex h-full items-end  gap-2 justify-end">
             
-            <Button asChild><Link href={`/dashboard/project/${id}`}>View Project</Link></Button>
+            <Button asChild><Link href={`/project/${id}`}>View Project</Link></Button>
             <DeleteProjectButton id={id}/>
         </CardContent>
 

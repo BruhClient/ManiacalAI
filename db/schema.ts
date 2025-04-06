@@ -10,6 +10,7 @@ import {
 import type { AdapterAccountType } from "next-auth/adapters"
 import { env } from "@/data/env/server";
 import { drizzle } from "drizzle-orm/neon-http";
+import { nanoid } from "nanoid";
 
 export const db = drizzle(env.AUTH_DRIZZLE_URL)
 
@@ -106,6 +107,8 @@ export const passwordTokens = pgTable(
       userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }), 
       pdfUrl: text("pdfUrl").notNull(),
       createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+      isSharable : boolean("isSharable").default(false), 
+      password : text("password").$defaultFn(() => nanoid(10)).notNull(),
      
     },
 

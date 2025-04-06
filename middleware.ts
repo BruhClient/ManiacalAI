@@ -6,6 +6,7 @@ import { NextResponse } from "next/server"
 
 
 const apiRoutePrefix = "/api/auth"
+
 const authRoutes = [
     "/signin" , 
     "/signup" , 
@@ -34,6 +35,7 @@ export default auth((req) => {
     }
 
     if (nextUrl.pathname.includes("/account-verification")) return NextResponse.next()
+    if (nextUrl.pathname.includes("/project")) return NextResponse.next()
 
     if (nextUrl.pathname.includes("/api/uploadthing")) return NextResponse.next()
 
