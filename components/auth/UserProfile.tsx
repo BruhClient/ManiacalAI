@@ -118,9 +118,7 @@ function UserProfile() {
             </DropdownMenuItem>
             }
 
-            <DropdownMenuItem >
-                <Handshake /> Community
-            </DropdownMenuItem>
+            
            
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut({
