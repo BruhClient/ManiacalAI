@@ -24,6 +24,8 @@ async function getRawBody(readable: ReadableStream<Uint8Array>): Promise<Buffer>
 export async function POST(req : NextRequest) { 
 
     const endpointSecret = env.STRIPE_WEBHOOK_KEY;
+
+    console.log(endpointSecret)
     const signature = (await headers()).get("stripe-signature") as string
 
     if (!signature || !endpointSecret) {
@@ -118,7 +120,7 @@ export async function POST(req : NextRequest) {
         return new NextResponse("Success")
     } catch(error) { 
 
-       
+       console.log(error)
         return new NextResponse("Error",{status : 500})
     }
     
