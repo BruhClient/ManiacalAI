@@ -8,6 +8,10 @@ import { redirect } from "next/navigation";
 import ProjectCard from "./_component/ProjectCard";
 import { AnimatePresence } from "motion/react";
 import { MotionDiv } from "@/lib/motion-wrapper";
+
+
+
+
 async function Dashboard() {
 
 

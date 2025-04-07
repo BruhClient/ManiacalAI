@@ -2,9 +2,9 @@
 
 import { db, projects } from "@/db/schema"
 import { auth } from "@/lib/auth"
-import { utapi } from "@/lib/utapi"
 import { eq, InferModel } from "drizzle-orm"
 import { revalidatePath, revalidateTag, unstable_cacheTag } from "next/cache"
+import { deleteFileFromUploadthing } from "../actions/uploadthing"
 
 
 export const getProjects = async (userId : string) => { 
@@ -53,7 +53,7 @@ export const deleteProject = async (id : string) => {
 
         
         
-        await utapi.deleteFiles([fileKey])
+        await deleteFileFromUploadthing(fileKey)
         
 
         revalidatePath("/dashboard")

@@ -5,17 +5,18 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import useSessionUser from '@/hooks/use-session-user'
 import { useUploadThing } from '@/lib/uploadthing'
-import { bytesToMB, cn } from '@/lib/utils'
+import { bytesToMB, cn, extractFileKey } from '@/lib/utils'
 import { UploadFormPayload, UploadFormSchema } from '@/schema/upload-form'
 import { fetchAndExtractPdfText } from '@/server/actions/langchain'
 import { generatePDFSummary, generateSimplifiedPDFContent } from '@/server/actions/pdf'
 import { hasPermission } from '@/server/actions/permissions'
+import { deleteFileFromUploadthing } from '@/server/actions/uploadthing'
 import { createProject } from '@/server/db/projects'
 import { decrementProjectsLeft } from '@/server/db/users'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { Loader2, Upload } from 'lucide-react'
-import React, { useState, useTransition } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -42,6 +43,19 @@ const UploadForm = () => {
 
     const queryClient = useQueryClient()
     
+    useEffect(() => { 
+        const res = localStorage.getItem("PDF File")
+
+        const deleteFile  = async (key : string) => { 
+            await deleteFileFromUploadthing(key)
+        }
+
+        if (res) { 
+            deleteFile(res)
+        }
+        
+
+    },[])
 
     const onSubmit = (values : UploadFormPayload) => {
         
@@ -69,9 +83,19 @@ const UploadForm = () => {
                 const resp = await startUpload([file[0]])
 
                 
+
+                
                 if (!resp)  throw Error("File upload failed")
 
+                
+
                 const {key ,serverData : {fileUrl : pdfUrl} } = resp[0] 
+
+                const fileKey = extractFileKey(pdfUrl)
+                if (fileKey) { 
+                    localStorage.setItem("PDF File",fileKey)
+                }
+                
 
                 setLoadingState("Extracting PDF Text...")
                 const pdfText = await fetchAndExtractPdfText(pdfUrl)
@@ -140,10 +164,15 @@ const UploadForm = () => {
 
                 } else { 
                     
+                    if (fileKey ) { 
+                        await deleteFileFromUploadthing(fileKey)
+                    }
                     
                     throw Error("Failed to create project. Please check your internet connection")
                 }
 
+
+                localStorage.removeItem("PDF File")
                 toast.dismiss(toastId)
 
             } catch(error : any) { 
@@ -188,7 +217,7 @@ const UploadForm = () => {
                                     render={({field}) => (
                                         <FormItem >
                                             <FormLabel>
-                                                PDF {field.value && `( ${bytesToMB(field.value[0].size)}MB ) `}
+                                                PDF {field.value[0] && `( ${bytesToMB(field.value[0].size)}MB ) `}
                                             </FormLabel>
                                             <FormControl>
                                             <Input

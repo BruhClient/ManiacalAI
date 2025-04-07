@@ -1,13 +1,16 @@
 "use server"
 
+
+
+
+
 import { generateSimplifiedContent, generateSummaryFromOpenAI } from "./openai"
-import { utapi } from "@/lib/utapi"
 
 export async function generatePDFSummary(pdfText : string,key : string) { 
 
     try { 
         if (pdfText === "" ) { 
-            await utapi.deleteFiles([key])
+        
             
             return { 
                     success : false , 
@@ -24,7 +27,7 @@ export async function generatePDFSummary(pdfText : string,key : string) {
         try { 
             summary = await generateSummaryFromOpenAI(pdfText) 
         } catch { 
-            await utapi.deleteFiles([key])
+          
             if (!summary) { 
                 return { 
                     success : false , 
@@ -43,7 +46,7 @@ export async function generatePDFSummary(pdfText : string,key : string) {
         
     } catch {
         
-        await utapi.deleteFiles([key])
+    
         return { 
             success : false , 
             message : "File upload failed", 
@@ -61,7 +64,7 @@ export async function generateSimplifiedPDFContent(pdfText : string,key : string
         try { 
             simplifedContent = await generateSimplifiedContent(pdfText) 
         } catch { 
-            await utapi.deleteFiles([key])
+          
             return { 
                 success : false , 
                 message : "Could not generate simplified content.",

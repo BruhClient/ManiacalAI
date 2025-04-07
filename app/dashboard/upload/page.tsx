@@ -6,6 +6,10 @@ import Link from 'next/link'
 import { ChevronLeft, FileUpIcon } from 'lucide-react'
 import { MotionDiv } from '@/lib/motion-wrapper'
 
+
+
+
+
 const UploadPage = () => {
   return (
     <MotionDiv initial={{ opacity : 0 , y : 5}} animate={{opacity : 1 , y: 0}} className='w-full h-[90vh]  flex justify-center items-center flex-col gap-5'>
