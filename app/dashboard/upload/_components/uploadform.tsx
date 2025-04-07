@@ -25,12 +25,6 @@ const UploadForm = () => {
     const [isPending,startTransition] = useTransition()
     const { startUpload } = useUploadThing('pdfUploader', {
         
-        onUploadError: (err) => {
-            setLoadingState(null)
-          toast.error("PDF Upload failed. Please check your internet connection.")
-          
-        },
-        
       });
 
     const user = useSessionUser()
@@ -51,12 +45,12 @@ const UploadForm = () => {
 
     const onSubmit = (values : UploadFormPayload) => {
         
-        
+        const toastId = toast.loading("This might take awhile")
         startTransition(async () => {
 
             
             try { 
-
+                
                 const fileSize = values.file[0].size as number
 
 
@@ -64,9 +58,9 @@ const UploadForm = () => {
                 const isAllowed = await hasPermission(fileSize)
                 
                 if (!isAllowed || !isAllowed.allowed) { 
-                    toast.error(isAllowed.message)
+                   
                     
-                    return
+                    throw Error(isAllowed.message)
                 } 
 
                 const {file,name} = UploadFormSchema.parse(values)
@@ -75,7 +69,7 @@ const UploadForm = () => {
                 const resp = await startUpload([file[0]])
 
                 
-                if (!resp)  return
+                if (!resp)  throw Error("File upload failed")
 
                 const {key ,serverData : {fileUrl : pdfUrl} } = resp[0] 
 
@@ -92,10 +86,10 @@ const UploadForm = () => {
                 
 
                 if (!res.success || !res.data) { 
-                    toast.error(res.message)
                     
                     
-                    return 
+                    
+                    throw Error(res.message) 
                 } 
 
                 const summary = res.data
@@ -108,9 +102,9 @@ const UploadForm = () => {
                 
                 
                 if (!data.success) { 
-                    toast.error(res.message)
                     
-                    return
+                    
+                    throw Error(res.message)
                 } 
 
 
@@ -122,7 +116,7 @@ const UploadForm = () => {
                     if (!res) { 
                         toast.error("Failed to create project. Please check your internet connection")
                         
-                        return 
+                        throw Error("Failed to create project. Please check your internet connection") 
                     } else { 
                         queryClient.invalidateQueries({queryKey : ["projectsLeft",user.id]})
                     }
@@ -146,13 +140,16 @@ const UploadForm = () => {
 
                 } else { 
                     
-                    toast.error("Failed to create project. Please check your internet connection")
+                    
+                    throw Error("Failed to create project. Please check your internet connection")
                 }
 
-            } catch(error) { 
+                toast.dismiss(toastId)
+
+            } catch(error : any) { 
                 
-               
-                toast.error("Something went wrong. Please check your internet connection")
+                toast.dismiss(toastId)
+                toast.error(error.message)
             }
 
         })

@@ -79,7 +79,7 @@ const AiChat = ({messages,handleSubmit,input,handleInputChange,isLoading,isAutho
                 <Bot className='text-foreground' />
                 <div className='w-fit bg-primary px-2 py-1 rounded-lg flex items-center'>Thinking...</div>
             </MotionDiv>}
-        </div> : <div className='h-full text-muted-foreground font-serif flex justify-center items-center text-sm'>Only Basic and Premium members can access shared ai chat</div>}
+        </div> : <div className='h-full text-center text-muted-foreground font-serif flex justify-center items-center text-sm'>Only Basic and Premium members can access shared ai chat</div>}
         
         <form className='flex gap-2' onSubmit={handleSubmit}>
             <Input placeholder='Enter a message' onChange={handleInputChange} disabled={!isAuthorized} value={input}/>

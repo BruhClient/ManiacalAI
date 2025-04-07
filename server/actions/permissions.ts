@@ -32,10 +32,10 @@ export const hasPermission = async (fileSize : number) => {
 
 
     const maxFileSize = plan?.fileSize!
-    console.log(maxFileSize)
+    
     const fileSizeInMB = fileSize / (1028 * 1028)
 
-    console.log(fileSizeInMB)
+    
 
     if (maxFileSize < fileSizeInMB) { 
         return {
