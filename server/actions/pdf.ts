@@ -2,7 +2,7 @@
 
 import { generateSimplifiedContent, generateSummaryFromOpenAI } from "./openai"
 
-export async function generatePDFSummary(pdfText : string,key : string) { 
+export async function generatePDFSummary(pdfText : string) { 
 
     try { 
         if (pdfText === "" ) { 

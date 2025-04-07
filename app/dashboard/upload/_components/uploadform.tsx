@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import useSessionUser from '@/hooks/use-session-user'
 import { useUploadThing } from '@/lib/uploadthing'
-import { bytesToMB, cn, extractFileKey } from '@/lib/utils'
+import { bytesToMB, cn } from '@/lib/utils'
 import { UploadFormPayload, UploadFormSchema } from '@/schema/upload-form'
 import { fetchAndExtractPdfText } from '@/server/actions/langchain'
 import { generatePDFSummary, generateSimplifiedPDFContent } from '@/server/actions/pdf'
@@ -91,60 +91,51 @@ const UploadForm = () => {
 
                 const {key ,serverData : {fileUrl : pdfUrl} } = resp[0] 
 
-                const fileKey = extractFileKey(pdfUrl)
-                if (fileKey) { 
-                    localStorage.setItem("PDF File",fileKey)
+                
+
+                
+                if (key) { 
+                    localStorage.setItem("PDF File",key)
                 }
                 
 
                 setLoadingState("Extracting PDF Text...")
+
+
                 const pdfText = await fetchAndExtractPdfText(pdfUrl)
 
-                if (pdfText === "" ) { 
-                    throw Error("Unable to parse PDF")
-                }
 
-
-              
                 setLoadingState("Generating Summary...")
+
+
+                const res = await generatePDFSummary(pdfText)
+                
                 
 
-
-                const res = await fetch('/api/pdf/summary', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ pdfText }),
-                }).then((data) => data.json());
-                
-                console.log(res)
-
-                if (!res.summary) { 
+                if (!res.success || !res.data) { 
                     
                     
                     
-                    throw Error(res.error) 
+                    throw Error(res.message) 
                 } 
 
-                const summary = res.summary
+
+
+                const summary = res.data
+
+
+
 
                 setLoadingState("Generating AI Chatbot...")
 
-                const response = await fetch('/api/pdf/simplify-content', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ pdfText }),
-                }).then((data) => data.json());
-
-                console.log(response)
-
-                if (!response?.content) { 
+                
+                const data = await generateSimplifiedPDFContent(pdfText)
+                
+                
+                if (!data.success) { 
                     
                     
-                    throw Error(response.error)
+                    throw Error(res.message)
                 } 
 
 
@@ -167,7 +158,7 @@ const UploadForm = () => {
                 
                 const result = await createProject({ 
                         name, 
-                        content : response.content, 
+                        content : data.data!, 
                         summary , 
                         pdfUrl, 
                 })
@@ -180,9 +171,6 @@ const UploadForm = () => {
 
                 } else { 
                     
-                    if (fileKey ) { 
-                        await deleteFileFromUploadthing(fileKey)
-                    }
                     
                     throw Error("Failed to create project. Please check your internet connection")
                 }
@@ -191,8 +179,7 @@ const UploadForm = () => {
                 localStorage.removeItem("PDF File")
                 toast.dismiss(toastId)
 
-            } catch(error : any) { 
-                
+            } catch(error : any) {       
                 toast.dismiss(toastId)
                 toast.error(error.message)
             }
@@ -233,7 +220,7 @@ const UploadForm = () => {
                                     render={({field}) => (
                                         <FormItem >
                                             <FormLabel>
-                                                PDF {field.value[0] && `( ${bytesToMB(field.value[0].size)}MB ) `}
+                                                PDF {field.value && `( ${bytesToMB(field.value[0].size)}MB ) `}
                                             </FormLabel>
                                             <FormControl>
                                             <Input
