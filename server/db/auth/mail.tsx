@@ -1,6 +1,9 @@
 
 import { env } from "@/data/env/server"
 import {Resend} from "resend"
+import {EmailVerificationToken} from "@/components/mail/LinkTemplate"
+import PasswordResetTemplate from "@/components/mail/PasswordResetTemplate"
+
 
 const resend = new Resend(env.RESEND_API_KEY)
 
@@ -11,10 +14,10 @@ export const sendVerificationEmail = async ( email: string , token:string ) => {
     const confirmLink = `${domain}/account-verification/${token}`
 
     await resend.emails.send({ 
-        from : "mail@recursionerror.com", 
+        from : "mail@maniacalai.com", 
         to : email , 
         subject : "Confirm your email" , 
-        html : `<p>Click <a href="${confirmLink}">here</a> to confirm email</p>`
+        react : <EmailVerificationToken href={confirmLink} email={email} />
     })
 
     
@@ -24,10 +27,10 @@ export const sendPasswordResetEmail = async ( email: string , code:string ) => {
     
     
     await resend.emails.send({ 
-        from : "mail@recursionerror.com", 
+        from : "mail@maniacalai.com", 
         to : email , 
         subject : "Password Reset Code" , 
-        html : `<p>Your Verification Code is ${code}</p>`
+        react : <PasswordResetTemplate verificationCode={code} />
     })
 
     
