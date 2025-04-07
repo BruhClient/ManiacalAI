@@ -100,7 +100,9 @@ const UploadForm = () => {
                 setLoadingState("Extracting PDF Text...")
                 const pdfText = await fetchAndExtractPdfText(pdfUrl)
 
-              
+                if (pdfText === "" ) { 
+                    throw Error("Unable to parse PDF")
+                }
 
 
               
@@ -108,25 +110,28 @@ const UploadForm = () => {
                 
 
 
-                const res = await generatePDFSummary(pdfText,key)
+                const res = await fetch('/api/pdf/summary', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ pdfText }),
+                }).then((data) => data.json());
                 
-                
+                console.log(res)
 
-                if (!res.success || !res.data) { 
+                if (!res.summary) { 
                     
                     
                     
-                    throw Error(res.message) 
+                    throw Error(res.error) 
                 } 
 
-                const summary = res.data
-
-
-
+                const summary = res.summary
 
                 setLoadingState("Generating AI Chatbot...")
 
-                const response = await fetch('/api/pdf', {
+                const response = await fetch('/api/pdf/simplify-content', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
@@ -134,10 +139,12 @@ const UploadForm = () => {
                     body: JSON.stringify({ pdfText }),
                 }).then((data) => data.json());
 
+                console.log(response)
+
                 if (!response?.content) { 
                     
                     
-                    throw Error("Could not generate Ai Bot")
+                    throw Error(response.error)
                 } 
 
 
@@ -160,7 +167,7 @@ const UploadForm = () => {
                 
                 const result = await createProject({ 
                         name, 
-                        content : response.message, 
+                        content : response.content, 
                         summary , 
                         pdfUrl, 
                 })

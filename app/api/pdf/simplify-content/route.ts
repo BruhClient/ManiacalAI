@@ -29,11 +29,9 @@ export async function POST(request : NextRequest) {
     return NextResponse.json({ content: completion.choices[0].message.content }, { status: 200 });
     
   } catch (error: any) {
-    console.log('Error occurred during openai', error);
-    if (error?.status === 429) {
-      throw new Error('RATE_LIMIT_EXCEEDED');
-    }
-    throw error;
+    
+    
+    return NextResponse.json({ error: "Unable to generate AI bot" }, { status: error.status });
   }
 
   
