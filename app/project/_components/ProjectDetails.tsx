@@ -9,11 +9,14 @@ import ShareButton from './Sharebutton'
 import DeleteProjectButton from '@/app/dashboard/_component/DeleteProjectButton'
 import Details from './Details'
 import { ChevronLeft } from 'lucide-react'
+import useSessionUser from '@/hooks/use-session-user'
 
 const ProjectDetails = ({project,isOwner}:{project : InferModel<typeof projects>,isOwner : boolean }) => {
+
+  const user = useSessionUser()
   return (
-    <div>
-      <div className='flex justify-center w-full flex-col items-center gap-3 px-2 pt-3 pb-8 relative'>
+    <div className='relative'>
+      <div className='flex justify-center w-full flex-col items-center gap-3 px-2 pb-8 pt-10'>
       <div className='flex flex-col items-center gap-2'>
         <div className='text-3xl font-serif font-bold break-words text-center'>
           {project.name}
@@ -41,8 +44,8 @@ const ProjectDetails = ({project,isOwner}:{project : InferModel<typeof projects>
       <Details summary={project.summary} isOwner={isOwner} content={project.content!} createdAt={project.createdAt}/>
 
       <Button className='absolute top-0 left-5' size={"icon"} asChild>
-            <Link href={"/dashboard"}><ChevronLeft /></Link>
-        </Button>
+            <Link href={user ? "/dashboard" : "/"}><ChevronLeft /></Link>
+      </Button>
       
     </div>
     </div>

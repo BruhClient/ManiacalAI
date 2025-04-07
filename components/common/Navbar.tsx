@@ -92,7 +92,7 @@ const Navbar = () => {
         )}
         
     </nav>
-    {!user && <div className='flex gap-2 md:hidden justify-center'>
+    {!user && pathname === "/" && <div className='flex gap-2 md:hidden justify-center'>
             {navLinks.map((navLink) => <Button key={navLink.name} variant={"link"}><Link href={navLink.href} className='text-muted-foreground'>{navLink.name}</Link></Button>)}
             
     </div>}
