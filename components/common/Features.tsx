@@ -174,7 +174,7 @@ const DetailBlock = async () => {
                             Yo , How do you keep aceing your exams ?
                         </div>
                         <div className='self-end bg-primary w-fit px-3 py-2 rounded-lg text-primary-foreground'>
-                            I started using Maniacal.ai
+                            I started using Maniacal AI
                         </div>
                         <div className='bg-background w-fit px-3 py-2 rounded-lg text-foreground'>
                             What's that ?

@@ -53,7 +53,7 @@ const Navbar = () => {
                 </div>
             
                 <div className='text-2xl'>
-                    Maniacal.Ai
+                    Maniacal AI
                 </div>
                 
             </MotionDiv>
