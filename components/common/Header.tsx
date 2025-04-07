@@ -17,7 +17,7 @@ const headerVariants = {
 }
 const Header = () => {
   return (
-    <MotionDiv transition={{staggerChildren : 0.5}} initial={"initial"} whileInView={"visible"}  className='w-full flex justify-center flex-col items-center lg:h-[70vh] h-[60vh] gap-5'>
+    <MotionDiv transition={{staggerChildren : 0.5}} initial={"initial"} animate={"visible"}  className='w-full flex justify-center flex-col items-center lg:h-[70vh] h-[60vh] gap-5'>
         <Badge className='text-lg bg-gradient-to-r from-red-400 to-primary px-4 flex gap-2 items-center border-none'><Sparkles className='animate-pulse' /> Powered by GPT-4</Badge>
         <MotionDiv variants={headerVariants} className="text-5xl font-bold leading-tight text-center max-w-2xl mx-auto">
         Learn Smarter, Faster. 
