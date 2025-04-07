@@ -6,6 +6,8 @@ import React from 'react'
 
 import { getUserById } from '@/server/db/users'
 import ProjectAuth from '../_components/ProjectAuth'
+import { MotionDiv } from '@/lib/motion-wrapper'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>}) => {
 
@@ -46,16 +48,7 @@ const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>})
 
 
 
-
-
-    
-
-
-
-    
   
-
-
   return (
     <ProjectAuth project={project} isOwner={isOwner} OwnerEmail={user.email} OwnerAvatar={user.image} OwnerName={user.username}/>
   )

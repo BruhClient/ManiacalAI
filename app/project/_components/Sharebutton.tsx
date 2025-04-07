@@ -20,6 +20,7 @@ import { Switch } from '@/components/ui/switch'
 import { updateProjectById } from '@/server/db/projects'
 import { MotionDiv } from '@/lib/motion-wrapper'
 import toast from 'react-hot-toast'
+import { boolean } from 'drizzle-orm/gel-core'
 
   
 const ShareButton = ({id,password,isSharable} : {id : string,password : string,isSharable : boolean}) => {
@@ -35,6 +36,7 @@ const ShareButton = ({id,password,isSharable} : {id : string,password : string,i
     const [sharable,setSharable] = useState(isSharable)
     const [copied, setCopied] = useState(false);
     const [isPending,startTransition] = useTransition()
+    const [isSharablePending,startSharableTransition] = useTransition()
     const handleCopy = async (text : string) => {
         try {
           await navigator.clipboard.writeText(text);
@@ -44,14 +46,13 @@ const ShareButton = ({id,password,isSharable} : {id : string,password : string,i
         } catch (err) {
           console.error('Failed to copy:', err);
         }
-      };
+    };
 
 
     const onSubmit = (values : ProjectPasswordPayload) => { 
         
         startTransition(() => {
             updateProjectById(id,{
-                isSharable : values.isSharable, 
                 password : values.password, 
             }).then((data) => { 
                 if (!data) { 
@@ -62,6 +63,20 @@ const ShareButton = ({id,password,isSharable} : {id : string,password : string,i
             })
         })
         
+    }
+
+    const toggleSharable = (sharable : boolean) => { 
+      startSharableTransition(() => {
+        updateProjectById(id,{
+            isSharable : sharable
+             
+        }).then((data) => { 
+            if (!data) { 
+                toast.error("Something went wrong")
+                setSharable(!sharable)
+            } 
+        })
+    })
     }
   return (
 
@@ -89,7 +104,7 @@ const ShareButton = ({id,password,isSharable} : {id : string,password : string,i
               control={form.control}
               name="isSharable"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm" >
                   <div className="space-y-0.5">
                     <FormLabel>Share with others</FormLabel>
                     <FormDescription>
@@ -101,8 +116,9 @@ const ShareButton = ({id,password,isSharable} : {id : string,password : string,i
                       checked={field.value}
                       onCheckedChange={(e) => {
                         setSharable(e)
+                        toggleSharable(e)
                         field.onChange(e)
-                    }}
+                      }}
                     />
                   </FormControl>
                 </FormItem>
@@ -142,13 +158,14 @@ const ShareButton = ({id,password,isSharable} : {id : string,password : string,i
                         </div>
 
                         <div className='text-sm text-muted-foreground'>* Only basic and premium plan users can use AI chat</div>
+                        <Button className='w-full' disabled={isPending}>{isPending ? "Updating..." : <><Save/> Save Changes</>}</Button>
                     </MotionDiv>
                     
                 }
 
                     
                     
-                    <Button className='w-full' disabled={isPending}>{isPending ? "Updating..." : <><Save/> Save Changes</>}</Button>
+                    
                 </form>
             </Form>
             
