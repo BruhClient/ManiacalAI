@@ -60,8 +60,8 @@ const UploadForm = () => {
     const onSubmit = (values : UploadFormPayload) => {
         
         const toastId = toast.loading("This might take awhile")
+        let fileKey : string ; 
         startTransition(async () => {
-
             
             try { 
                 
@@ -69,6 +69,8 @@ const UploadForm = () => {
 
 
                 setLoadingState("Checking user details...")
+
+                // Checking Permissions
                 const isAllowed = await hasPermission(fileSize)
                 
                 if (!isAllowed || !isAllowed.allowed) { 
@@ -80,6 +82,11 @@ const UploadForm = () => {
                 const {file,name} = UploadFormSchema.parse(values)
                 
                 setLoadingState("Uploading files...")
+
+
+                // Uploading Files
+
+
                 const resp = await startUpload([file[0]])
 
                 
@@ -90,11 +97,11 @@ const UploadForm = () => {
                 
 
                 const {key ,serverData : {fileUrl : pdfUrl} } = resp[0] 
+                fileKey = key
 
-                
 
-                
                 if (key) { 
+                    // Saving to local storage
                     localStorage.setItem("PDF File",key)
                 }
                 
@@ -102,11 +109,15 @@ const UploadForm = () => {
                 setLoadingState("Extracting PDF Text...")
 
 
+                // Extracting PDF Text
+ 
                 const pdfText = await fetchAndExtractPdfText(pdfUrl)
-
+                
+                
 
                 setLoadingState("Generating Summary...")
 
+                // Generating PDF Summary
 
                 const res = await generatePDFSummary(pdfText)
                 
@@ -128,7 +139,7 @@ const UploadForm = () => {
 
                 setLoadingState("Generating AI Chatbot...")
 
-                
+                // Generating AI Chatbot prompt
                 const data = await generateSimplifiedPDFContent(pdfText)
                 
                 
@@ -140,7 +151,8 @@ const UploadForm = () => {
 
 
 
-
+                
+                // Handle Free Plan Quota
                 if (user?.planType === "free" ) { 
                     const res = await decrementProjectsLeft(user!.id)
 
@@ -155,13 +167,14 @@ const UploadForm = () => {
 
                 setLoadingState("Creating Project...")
 
-                
+                // Creating Project
                 const result = await createProject({ 
                         name, 
                         content : data.data!, 
                         summary , 
                         pdfUrl, 
                 })
+
 
                 if (result.success) { 
 
@@ -175,11 +188,14 @@ const UploadForm = () => {
                     throw Error("Failed to create project. Please check your internet connection")
                 }
 
-
+                // Remove from local storage
                 localStorage.removeItem("PDF File")
                 toast.dismiss(toastId)
 
-            } catch(error : any) {       
+            } catch(error : any) {    
+                 if (fileKey) { 
+                    await deleteFileFromUploadthing(fileKey)
+                 }
                 toast.dismiss(toastId)
                 toast.error(error.message)
             }
