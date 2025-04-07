@@ -117,4 +117,44 @@ export const EmailVerificationToken = ({
   
 
   
+
+  export const ReceiptEmail = ({
+    email,
+    href
+  }: EmailVerificationTokenProps) => (
+    <Html>
+      <Head />
+      <Body style={main}>
+        <Preview>
+          Thank you for supporting us !
+        </Preview>
+        <Container style={container}>
+          
+  
+          <Text style={title}>
+            <strong>@{email}</strong>, thank you for your purchase. 
+          </Text>
+  
+          <Section style={section}>
+            <Text style={text}>
+              Heya !
+            </Text>
+            <Text style={text}>
+                here is your receipt . Thank you for supporting us !
+            </Text>
+  
+            <Button style={button} href={href}>View Receipt</Button>
+          </Section>
+          <Text style={links}>
+            <Link style={link}>Your security audit log</Link> ・{' '}
+            <Link style={link}>Contact support</Link>
+          </Text>
+  
+          <Text style={footer}>
+            Maniacal AI @ 2025
+          </Text>
+        </Container>
+      </Body>
+    </Html>
+  );
   

@@ -1,7 +1,7 @@
 
 import { env } from "@/data/env/server"
 import {Resend} from "resend"
-import {EmailVerificationToken} from "@/components/mail/LinkTemplate"
+import {EmailVerificationToken, ReceiptEmail} from "@/components/mail/LinkTemplate"
 import PasswordResetTemplate from "@/components/mail/PasswordResetTemplate"
 
 
@@ -31,6 +31,19 @@ export const sendPasswordResetEmail = async ( email: string , code:string ) => {
         to : email , 
         subject : "Password Reset Code" , 
         react : <PasswordResetTemplate verificationCode={code} />
+    })
+
+    
+} 
+
+export const sendReceiptEmail = async ( email: string , href: string ) => { 
+    
+    
+    await resend.emails.send({ 
+        from : "mail@maniacalai.com", 
+        to : email , 
+        subject : "Payment Receipt" , 
+        react : <ReceiptEmail email={email} href={href}/>
     })
 
     

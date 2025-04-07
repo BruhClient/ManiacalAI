@@ -7,6 +7,7 @@ import { pricingTypes } from "@/data/pricing";
 import { db, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { getUserByEmail } from "@/server/db/users";
+import { sendReceiptEmail } from "@/server/db/auth/mail";
 
 async function getRawBody(readable: ReadableStream<Uint8Array>): Promise<Buffer> {
     const reader = readable.getReader();
@@ -48,14 +49,14 @@ export async function POST(req : NextRequest) {
         return new NextResponse("invalid signature",{status : 400})
     }
     //@ts-ignore
-    const data = event.data.object as {id : string, customer : string , plan : {id : string} }
+    const data = event.data.object as any
     const eventType = event.type
     
     try { 
         switch (eventType) { 
             case "checkout.session.completed" : { 
 
-                console.log("----------------SESSION COMPLETED----------------")
+                
                
                 
                 const session =  await stripe.checkout.sessions.retrieve(
@@ -124,17 +125,20 @@ export async function POST(req : NextRequest) {
                 
             }
             
-            
+            case "invoice.created" :{
+                
+                const invoice_url = data.hosted_invoice_url
+                const customer_email = data.customer_email
+                await sendReceiptEmail(customer_email,invoice_url)
+            }
             case "customer.subscription.deleted" : {
              
-                const session =  await stripe.subscriptions.retrieve(
-                    data.id, 
-                ) as {customer : string }
+               
 
                 
 
 
-                const customer = await stripe.customers.retrieve(data.customer) as { email : string}
+                const customer = await stripe.customers.retrieve(data.customer) as {id : string, email : string}
 
                 const user = await getUserByEmail(customer.email)
                 if (!user) {
@@ -142,7 +146,7 @@ export async function POST(req : NextRequest) {
                 } 
 
                 const activeSub = await stripe.subscriptions.list({
-                    customer: session.customer,
+                    customer: customer.id,
                     status: "active",
                     limit: 1,
                   });
