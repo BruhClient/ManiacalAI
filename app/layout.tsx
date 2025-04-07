@@ -21,6 +21,27 @@ const geistMono = Poppins({
 export const metadata: Metadata = {
   title: "Maniacal AI",
   description: "Ai PDF Summarizer with chat",
+  icons :{
+    icon : "/icon.svg"
+  },
+  keywords : ["NextJs" , "TypeScript","JavaScript"], 
+  metadataBase : new URL("https://www.maniacalai.com"), 
+  twitter : { 
+    card: "summary_large_image", 
+    site : "https://www.maniacalai.com", 
+    creator : "@TravisAng", 
+    title : "Maniacal AI | Ai PDF Summarizer with chat", 
+    description : "View PDFs differently", 
+    images: ["feature.png"]
+  }, 
+  openGraph : { 
+    title : "Maniacal AI | Ai PDF Summarizer with chat", 
+    description : "Maniacal AI", 
+    url : "https://www.maniacalai.com",
+    siteName :"Recursion Error",
+    images: ["feature.png"], 
+
+  }
   
 };
 

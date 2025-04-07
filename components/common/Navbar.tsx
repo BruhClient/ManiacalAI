@@ -49,7 +49,7 @@ const Navbar = () => {
             <MotionDiv initial={{ opacity : 0 , y : 5}} animate={{opacity : 1 , y: 0}} className='flex items-center gap-2'>
 
                 <div>
-                <Flame className='text-primary' />
+                    <Flame className='text-primary' />
                 </div>
             
                 <div className='text-2xl'>
