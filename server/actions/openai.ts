@@ -3,7 +3,7 @@ import { env } from '@/data/env/server';
 import { SUMMARY_SYSTEM_PROMPT } from '@/lib/summary-prompt';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
+export const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
 });
 

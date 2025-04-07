@@ -105,6 +105,9 @@ const UploadForm = () => {
 
               
                 setLoadingState("Generating Summary...")
+                
+
+
                 const res = await generatePDFSummary(pdfText,key)
                 
                 
@@ -122,13 +125,19 @@ const UploadForm = () => {
 
 
                 setLoadingState("Generating AI Chatbot...")
-                const data = await generateSimplifiedPDFContent(pdfText,key)
-                
-                
-                if (!data.success) { 
+
+                const response = await fetch('/api/pdf', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ pdfText }),
+                }).then((data) => data.json());
+
+                if (!response?.content) { 
                     
                     
-                    throw Error(res.message)
+                    throw Error("Could not generate Ai Bot")
                 } 
 
 
@@ -151,7 +160,7 @@ const UploadForm = () => {
                 
                 const result = await createProject({ 
                         name, 
-                        content : data.data!, 
+                        content : response.message, 
                         summary , 
                         pdfUrl, 
                 })

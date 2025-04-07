@@ -1,9 +1,5 @@
 "use server"
 
-
-
-
-
 import { generateSimplifiedContent, generateSummaryFromOpenAI } from "./openai"
 
 export async function generatePDFSummary(pdfText : string,key : string) { 
@@ -59,7 +55,7 @@ export async function generatePDFSummary(pdfText : string,key : string) {
 
 }
 
-export async function generateSimplifiedPDFContent(pdfText : string,key : string) { 
+export async function generateSimplifiedPDFContent(pdfText : string) { 
     let simplifedContent ;
         try { 
             simplifedContent = await generateSimplifiedContent(pdfText) 
