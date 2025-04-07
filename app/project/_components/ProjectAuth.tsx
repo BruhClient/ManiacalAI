@@ -9,8 +9,9 @@ import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { User } from 'lucide-react'
+import { MotionDiv } from '@/lib/motion-wrapper'
 
-const ProjectAuth = ({project,isOwner,OwnerEmail, OwnerAvatar } : {project : InferModel<typeof projects>,isOwner : boolean,OwnerEmail : string,OwnerAvatar : string | null}) => {
+const ProjectAuth = ({project,isOwner,OwnerEmail, OwnerAvatar,OwnerName } : {project : InferModel<typeof projects>,isOwner : boolean,OwnerEmail : string,OwnerAvatar : string | null,OwnerName : string | null}) => {
 
   const [isAuthorized,setIsAuthorized] = useState(isOwner)
 
@@ -28,19 +29,31 @@ const ProjectAuth = ({project,isOwner,OwnerEmail, OwnerAvatar } : {project : Inf
   return (
     <div>
 
-      {isAuthorized ? <ProjectDetails project={project} isOwner={isOwner}/> : <div className='w-full h-[90vh] flex justify-center items-center'>
+      {isAuthorized ? <ProjectDetails project={project} isOwner={isOwner}/> : <MotionDiv initial={{opacity : 0 , y: 20}} animate={{opacity : 1, y: 0}} className='w-full h-[90vh] flex justify-center items-center'>
         <Card>
-          <CardHeader>
-            <CardTitle>
+          <CardHeader className='flex flex-col gap-5'>
+
+            <CardTitle className='break-all'>
               {project.name}
             </CardTitle>
-            <CardDescription className='flex items-center gap-2'>
-            <Avatar className="w-6 h-6" >
-                <AvatarImage src={OwnerAvatar ?? ""} alt="Profile" className="object-cover" ></AvatarImage>
-                <AvatarFallback><User size={12}/></AvatarFallback>
-            </Avatar>
-            {OwnerEmail}
+            <CardDescription className='flex gap-2 items-center' >
+              <Avatar className="w-7 h-7" >
+                  <AvatarImage src={OwnerAvatar ?? ""} alt="Profile" className="object-cover" ></AvatarImage>
+                  <AvatarFallback><User size={12}/></AvatarFallback>
+              </Avatar>
+              <div className='flex flex-col'>
+                <div className="font-serif text-foreground text-sm">
+                  {OwnerName}
+                  
+                </div>
+                <div className='text-sm'>
+                  {OwnerEmail}
+                </div>
+              </div>
+              
             </CardDescription>
+            
+            
           </CardHeader>
           <CardContent className='flex flex-col gap-2'>
             <div className='flex gap-2'>
@@ -59,7 +72,7 @@ const ProjectAuth = ({project,isOwner,OwnerEmail, OwnerAvatar } : {project : Inf
          
         </Card>
         
-      </div> }
+      </MotionDiv> }
       
     </div>
   )
