@@ -113,7 +113,7 @@ function UserProfile() {
                 </Dialog>
                 
            {user.planType !== "free" &&  <DropdownMenuItem asChild >
-                <Link href={`https://billing.stripe.com/p/login/test_9AQaH4fyu65U23KdQQ?prefilled_email=${user.email}`} target="_blank"><Wallet /> Billing</Link>
+                <Link href={`https://billing.stripe.com/p/login/bIY8Abaco19Y4hOaEE?prefilled_email=${user.email}`} target="_blank"><Wallet /> Billing</Link>
                 
             </DropdownMenuItem>
             }
