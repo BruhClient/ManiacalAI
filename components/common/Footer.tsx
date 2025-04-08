@@ -12,10 +12,10 @@ const Footer = () => {
             </div>
 
             <div className='flex gap-2'>
-                <Button size={"icon"} ><Facebook /></Button>
-                <Button size={"icon"}><SiWhatsapp /></Button>
-                <Button size={"icon"}><Github /></Button>
-                <Button size={"icon"}><Instagram /></Button>
+                <Button size={"icon"} variant={"ghost"} ><Facebook /></Button>
+                <Button size={"icon"} variant={"ghost"}><SiWhatsapp /></Button>
+                <Button size={"icon"} variant={"ghost"}><Github /></Button>
+                <Button size={"icon"} variant={"ghost"}><Instagram /></Button>
             </div>
         </div>
         
