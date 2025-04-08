@@ -10,7 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { User } from 'lucide-react'
 import { MotionDiv } from '@/lib/motion-wrapper'
 
-const ProjectAuth = ({project,isOwner,OwnerEmail, OwnerAvatar,OwnerName } : {project : InferModel<typeof projects>,isOwner : boolean,OwnerEmail : string,OwnerAvatar : string | null,OwnerName : string | null}) => {
+
+const ProjectAuth = ({project,isOwner,OwnerEmail, OwnerAvatar,OwnerName,decryptedPassword } : {decryptedPassword : string,project : InferModel<typeof projects>,isOwner : boolean,OwnerEmail : string,OwnerAvatar : string | null,OwnerName : string | null}) => {
 
   const [isAuthorized,setIsAuthorized] = useState(isOwner)
 
@@ -18,8 +19,11 @@ const ProjectAuth = ({project,isOwner,OwnerEmail, OwnerAvatar,OwnerName } : {pro
 
   const [password,setPassword] = useState("")
   
-  const onClick = () => { 
-    if (password === project.password) { 
+  const onClick = async () => {
+    
+    
+    
+    if (password === decryptedPassword) { 
       setIsAuthorized(true)
     } else { 
       setError("Password is incorrect")
@@ -28,7 +32,7 @@ const ProjectAuth = ({project,isOwner,OwnerEmail, OwnerAvatar,OwnerName } : {pro
   return (
     <div>
 
-      {isAuthorized ? <ProjectDetails project={project} isOwner={isOwner}/> : <MotionDiv initial={{opacity : 0 , y: 20}} animate={{opacity : 1, y: 0}} className='w-full h-[90vh] flex justify-center items-center'>
+      {isAuthorized ? <ProjectDetails project={project} isOwner={isOwner} decryptedPassword={decryptedPassword}/> : <MotionDiv initial={{opacity : 0 , y: 20}} animate={{opacity : 1, y: 0}} className='w-full h-[90vh] flex justify-center items-center'>
         <Card>
           <CardHeader className='flex flex-col gap-5'>
 

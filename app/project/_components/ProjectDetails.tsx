@@ -11,7 +11,7 @@ import Details from './Details'
 import { ChevronLeft } from 'lucide-react'
 import useSessionUser from '@/hooks/use-session-user'
 
-const ProjectDetails = ({project,isOwner}:{project : InferModel<typeof projects>,isOwner : boolean }) => {
+const ProjectDetails = ({project,isOwner,decryptedPassword}:{project : InferModel<typeof projects>,isOwner : boolean,decryptedPassword : string }) => {
 
   const user = useSessionUser()
   return (
@@ -31,7 +31,7 @@ const ProjectDetails = ({project,isOwner}:{project : InferModel<typeof projects>
           isOwner && <div className='flex gap-2'>
           
           
-          <ShareButton id={project.id} isSharable={project.isSharable!} password={project.password} />
+          <ShareButton id={project.id} isSharable={project.isSharable!} password={decryptedPassword} />
           <DeleteProjectButton id={project.id}/>
           
         </div>

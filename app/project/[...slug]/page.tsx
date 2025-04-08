@@ -6,8 +6,7 @@ import React from 'react'
 
 import { getUserById } from '@/server/db/users'
 import ProjectAuth from '../_components/ProjectAuth'
-import { MotionDiv } from '@/lib/motion-wrapper'
-import { Skeleton } from '@/components/ui/skeleton'
+import { decrypt } from '@/lib/encryption'
 
 const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>}) => {
 
@@ -15,7 +14,7 @@ const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>})
 
     const project = await getProject(id)
     const session = await auth()
-   
+    
     if (!project) { 
       if (session) { 
         redirect("/dashboard")
@@ -46,11 +45,14 @@ const ProjectDetailPage = async ({params} : {params : Promise<{slug : string}>})
       redirect("/")
     }
 
+    const decryptedPassword = decrypt(project.password)
+    
+
 
 
   
   return (
-    <ProjectAuth project={project} isOwner={isOwner} OwnerEmail={user.email} OwnerAvatar={user.image} OwnerName={user.username}/>
+    <ProjectAuth project={project} isOwner={isOwner} OwnerEmail={user.email} OwnerAvatar={user.image} OwnerName={user.username} decryptedPassword={decryptedPassword}/>
   )
 }
 

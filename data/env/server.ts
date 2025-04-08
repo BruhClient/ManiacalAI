@@ -16,7 +16,8 @@ export const env = createEnv({
     OPENAI_API_KEY:z.string(), 
     STRIPE_PUBLISHABLE_KEY:z.string(), 
     STRIPE_SECRET_KEY: z.string(), 
-    STRIPE_WEBHOOK_KEY:z.string()
+    STRIPE_WEBHOOK_KEY:z.string(), 
+    PROJECT_PASSWORD_SECRET:z.string(), 
   },
   experimental__runtimeEnv: process.env,
 })

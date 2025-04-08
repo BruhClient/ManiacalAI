@@ -108,7 +108,7 @@ export const passwordTokens = pgTable(
       pdfUrl: text("pdfUrl").notNull(),
       createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
       isSharable : boolean("isSharable").default(false), 
-      password : text("password").$defaultFn(() => nanoid(10)).notNull(),
+      password : text("password").notNull(),
      
     },
 

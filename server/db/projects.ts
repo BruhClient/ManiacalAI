@@ -5,6 +5,8 @@ import { auth } from "@/lib/auth"
 import { eq, InferModel } from "drizzle-orm"
 import { revalidatePath, revalidateTag, unstable_cacheTag } from "next/cache"
 import { deleteFileFromUploadthing } from "../actions/uploadthing"
+import { nanoid } from "nanoid"
+import { decrypt, encrypt } from "@/lib/encryption"
 
 
 export const getProjects = async (userId : string) => { 
@@ -89,15 +91,18 @@ export const createProject =  async ({content , name,summary , pdfUrl } : Projec
             }
         }
 
-        
-        
-        
+        const password = nanoid(10)
+
+        const hashedPassword = encrypt(password)
+
+
         const res = await db.insert(projects).values({
             content, 
             name, 
             summary , 
             userId : session.user.id , 
             pdfUrl ,
+            password : hashedPassword, 
         }).returning()
 
 
@@ -119,9 +124,25 @@ type project = Partial<InferModel<typeof projects>>;
 
 export const updateProjectById = async (id : string, options :  project) => { 
     try { 
-        await db.update( projects).set({
-            ...options
-        }).where(eq(projects.id, id))
+
+        if (options.password) { 
+            const hashedPassword = encrypt(options.password)
+            await db.update( projects).set({
+                ...options, 
+                password : hashedPassword , 
+    
+            }).where(eq(projects.id, id))
+        } else { 
+
+            await db.update( projects).set({
+                ...options, 
+                
+    
+            }).where(eq(projects.id, id))
+
+        }
+        
+        
 
 
         const user = await db.select().from(projects).where(eq(projects.id ,id)).limit(1);
