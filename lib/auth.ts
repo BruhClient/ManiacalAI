@@ -85,7 +85,7 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
 
         
         await updateUserById(userExists.id,{ 
-          username : nanoid(9) 
+          username,
         })
       }
       const user = await getUserById(token.sub ?? token.id as string)
