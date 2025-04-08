@@ -76,7 +76,7 @@ const Navbar = () => {
 
 
             {pathname === "/" && <div className='hidden md:flex gap-2'>
-                {navLinks.map((navLink) => <Button key={navLink.name} variant={"link"} asChild><Link scroll={false} onClick={(e) => smoothScroll(e, navLink.href.replace("#",""))}  href={navLink.href} className='text-muted-foreground'>{navLink.name}</Link></Button>)}
+                {navLinks.map((navLink) => <Button key={navLink.name} variant={"link"} asChild><Link scroll={false} onClick={(e) => smoothScroll(e, navLink.href.replace("#",""))}  href={navLink.href}>{navLink.name}</Link></Button>)}
                 
             </div>}
             
@@ -93,7 +93,7 @@ const Navbar = () => {
         
     </nav>
     {!user && pathname === "/" && <div className='flex gap-2 md:hidden justify-center'>
-            {navLinks.map((navLink) => <Button key={navLink.name} variant={"link"} asChild><Link href={navLink.href} className='text-muted-foreground'>{navLink.name}</Link></Button>)}
+            {navLinks.map((navLink) => <Button key={navLink.name} variant={"link"} asChild><Link href={navLink.href}>{navLink.name}</Link></Button>)}
             
     </div>}
     
