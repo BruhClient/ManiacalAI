@@ -27,7 +27,7 @@ const Header = () => {
         </MotionDiv>
         <MotionDiv variants={headerVariants} className='flex gap-3'>
             <Button asChild><Link href={"/signup"}>Start for free</Link></Button>
-            <Button variant={"outline"} asChild><Link scroll={false} href={"#demo"} onClick={(e) => smoothScroll(e, "demo")}><Play />Watch Video</Link></Button>
+            <Button variant={"outline"} asChild><Link scroll={false} href={"#video"} onClick={(e) => smoothScroll(e, "video")}><Play />Watch Video</Link></Button>
         </MotionDiv>
         
         

@@ -3,12 +3,15 @@
 
 import React from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
-import { Check, X } from 'lucide-react'
+
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { Pricing } from '@/data/pricing'
+import { Check,X } from 'lucide-react'
 
+const CustomCheck = () => <div className='bg-green-400 p-1 rounded-full '><Check className='text-black' size={15}/></div>
+const CustomX = () => <div  className='bg-red-400 p-1 rounded-full '><X size={15} className='text-black'/></div>
 
 
 const PricingCard = ({pricing,link,linkText,disabled = false} : {pricing : Pricing,link? : string,linkText? : string,disabled?:boolean}) => {
@@ -34,19 +37,19 @@ const PricingCard = ({pricing,link,linkText,disabled = false} : {pricing : Prici
     
                                 <div className='flex flex-col gap-2 py-5 px-1'>
                                     <div className='flex items-center text-lg gap-3 font-serif '>
-                                        <Check /> {pricing.numOfProjects} projects
+                                        <CustomCheck /> {pricing.numOfProjects} projects
                                     </div>
                                     <div className='flex items-center text-lg gap-3 font-serif '>
-                                        {pricing.support ? <Check /> : <X />} 24/7 support
+                                        {pricing.support ? <CustomCheck /> : <CustomX />} 24/7 support
                                     </div>
                                     <div className='flex items-center text-lg gap-3 font-serif '>
-                                        <Check /> {pricing.fileSize}MB File Upload
+                                        <CustomCheck/> {pricing.fileSize}MB File Upload
                                     </div>
                                     <div className='flex items-center text-lg gap-3 font-serif '>
-                                        {pricing.sharableLinks ? <Check /> : <X />} Sharable links
+                                        {pricing.sharableLinks ? <CustomCheck /> : <CustomX />} Sharable links
                                     </div>
                                     <div className='flex items-center text-lg gap-3 font-serif '>
-                                        {pricing.AiAnaysis ? <Check /> : <X />} Unlimited Ai Chats
+                                        {pricing.AiAnaysis ? <CustomCheck /> : <CustomX />} Unlimited Ai Chats
                                     </div>
                                     
 
