@@ -16,6 +16,7 @@ import { decrementProjectsLeft } from '@/server/db/users'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { Loader2, Upload } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -27,7 +28,7 @@ const UploadForm = () => {
     const { startUpload } = useUploadThing('pdfUploader', {
         
       });
-
+      const router = useRouter()
     const user = useSessionUser()
 
     const [loadingState,setLoadingState] = useState<string | null>(null)
@@ -181,6 +182,10 @@ const UploadForm = () => {
                     toast.success("Project created !")
 
                     form.setValue("name","")
+                    
+                    router.push(`${process.env.NEXT_PUBLIC_VERCEL_URL}/project/${result.data!.id}`)
+                    
+                    
 
                 } else { 
                     
