@@ -17,7 +17,7 @@ export async function POST(req : Request) {
 
         const systemMessage : CoreSystemMessage = { 
             role : "system", 
-            content : " You are a intelligent Learning assistant. You keep your answers concise and less than 200 words. You are given a document that the user has uploaded. . \n " 
+            content : " You are a intelligent Learning assistant. You are focused on the subject of the document and do not get distracted by other topics .  You keep your answers concise and less than 200 words. You are given a document that the user has uploaded. . \n " 
             + "The document : \n\n" 
             + body.content + 
             "\n\n You are also given a brief summary of the document. The Summary : \n\n"  + 
