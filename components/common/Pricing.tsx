@@ -25,7 +25,7 @@ const Pricing = () => {
                     Choose a plan that is right for you
                 </div>
                 <div className='text-lg'>
-                    Try our basic plan for free. Switch plans or cancel any time.
+                    Try our software for free. Switch plans or cancel any time.
                 </div>
                 
             </MotionDiv>
