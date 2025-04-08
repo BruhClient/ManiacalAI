@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import authConfig from "./auth-config"
-import { getUserById, updateUserByEmail, updateUserById } from "../server/db/users"
+import { getUserById, getUserByUsername, updateUserByEmail, updateUserById } from "../server/db/users"
 import {nanoid} from "nanoid"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { accounts, db, users } from "@/db/schema"
@@ -68,7 +68,22 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
       if (!userExists) return token
 
       if (!userExists.username) { 
-      
+        
+
+        let username = nanoid(9) 
+
+        let usernameExists = await getUserByUsername(username)
+
+        while (!usernameExists) { 
+
+          username = nanoid(9) 
+
+          usernameExists = await getUserByUsername(username) 
+
+
+        }
+
+        
         await updateUserById(userExists.id,{ 
           username : nanoid(9) 
         })
