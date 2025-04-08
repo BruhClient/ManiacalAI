@@ -35,7 +35,7 @@ export const pricingTypes = [
     name : "Premium" , 
     price : 39 , 
     priceId : "price_1RA6fjPRXBHsXHW5CHaqAsSw", 
-    fileSize : 25,
+    fileSize : 30,
     numOfProjects : "Unlimited" , 
     support : true , 
     discounts : 100,
