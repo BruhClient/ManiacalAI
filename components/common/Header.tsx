@@ -22,7 +22,7 @@ const Header = () => {
         <MotionDiv variants={headerVariants} className="text-5xl font-bold leading-tight text-center max-w-2xl mx-auto">
         Learn Smarter, Faster. 
         <MotionSpan variants={headerVariants} className="block text-2xl font-normal text-muted-foreground pt-2">
-            Upscale yourself with cutting-edge AI and automation tools designed for efficiency.
+            Avoid complicated PDFs with cutting-edge AI and automation tools designed for efficiency.
         </MotionSpan>
         </MotionDiv>
         <MotionDiv variants={headerVariants} className='flex gap-3'>
