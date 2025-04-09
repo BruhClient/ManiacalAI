@@ -33,12 +33,12 @@ async function Dashboard() {
             {projects.length === 0 ? 
             
             <div className="w-full h-full flex gap-3 justify-center items-center flex-col">
-                <FileUp size={60} />
-                <div className="text-4xl">Huh , no projects ?</div>
+                <Upload size={60} />
+                <div className="text-4xl">Upload PDF</div>
                 <div className=" font-serif text-muted-foreground">
                     Cmon , Lets get started !
                 </div>
-                <Button className="w-full max-w-[200px]" asChild><Link href={"/dashboard/upload"} className="flex gap-2 items-center"><Upload /> Upload PDF</Link></Button>
+                <Button className="w-full max-w-[200px]" asChild><Link href={"/dashboard/upload"} className="flex gap-2 items-center"> Upload PDF</Link></Button>
             </div>
             
             : 
