@@ -74,7 +74,7 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
 
         let usernameExists = await getUserByUsername(username)
 
-        while (!usernameExists) { 
+        while (usernameExists) { 
 
           username = nanoid(9) 
 
