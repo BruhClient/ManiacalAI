@@ -1,6 +1,6 @@
 "use server"
 
-import { generateSimplifiedContent, generateSummaryFromOpenAI } from "./openai"
+import { generateProjectName, generateSimplifiedContent, generateSummaryFromOpenAI } from "./openai"
 
 export async function generatePDFSummary(pdfText : string) { 
 
@@ -59,6 +59,25 @@ export async function generateSimplifiedPDFContent(pdfText : string) {
     let simplifedContent ;
         try { 
             simplifedContent = await generateSimplifiedContent(pdfText) 
+        } catch { 
+          
+            return { 
+                success : false , 
+                message : "Could not generate simplified content.",
+                data : null,
+            }
+        }
+
+        return { 
+            success : true , 
+            data : simplifedContent, 
+        }
+}
+
+export async function generateProjectTitle(pdfText : string) { 
+    let simplifedContent ;
+        try { 
+            simplifedContent = await generateProjectName(pdfText) 
         } catch { 
           
             return { 

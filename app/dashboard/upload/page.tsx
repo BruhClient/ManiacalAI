@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ChevronLeft, FileUpIcon } from 'lucide-react'
 import { MotionDiv } from '@/lib/motion-wrapper'
+import {Dropzone} from '@/components/Dropzone'
 
 
 
@@ -22,7 +23,8 @@ const UploadPage = () => {
         </CardHeader>
         
         <CardContent>
-          <UploadForm />
+        
+          <Dropzone />
           <Button variant={"link"}  asChild><Link href={"/dashboard"} className='text-center w-full pt-6'><ChevronLeft />Back to dashboard</Link></Button>
         </CardContent>
         
