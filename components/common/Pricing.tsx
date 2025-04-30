@@ -20,7 +20,7 @@ const Pricing = () => {
          <div className='w-full flex justify-center flex-col items-center' id='pricing'>
         
         <div className='max-w-6xl w-full flex flex-col gap-3'>
-            <MotionDiv className='flex flex-col gap-2' variants={cardVariants} initial={"initial"} whileInView={"animate"}>
+            <MotionDiv className='flex flex-col gap-2' variants={cardVariants} initial={"initial"} whileInView={"animate"}  viewport={{margin : "-200px"}} transition={{ duration: 0.5 }}>
                 <div className='text-3xl font-serif font-bold'>
                     Choose a plan that is right for you
                 </div>
@@ -29,7 +29,7 @@ const Pricing = () => {
                 </div>
                 
             </MotionDiv>
-            <MotionDiv className='grid-cols-1 lg:grid-cols-3 grid w-full  gap-3' whileInView={"animate"} initial={"initial"} transition={{staggerChildren : 0.5}} >
+            <MotionDiv className='grid-cols-1 lg:grid-cols-3 grid w-full  gap-3' whileInView={"animate"} initial={"initial"} transition={{staggerChildren : 0.5}}  viewport={{margin : "-200px"}} >
                 {pricingTypes.map((pricing) => { 
 
                     

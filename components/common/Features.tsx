@@ -20,7 +20,7 @@ const Features = () => {
   return (
   
     <div className='w-full'>
-        <MotionDiv initial={"initial"} whileInView={"visible"} transition={{staggerChildren: 0.05}} id='features'  className='grid w-full mx-auto max-w-6xl grid-cols-12 gap-4'>
+        <MotionDiv initial={"initial"} whileInView={"visible"} transition={{staggerChildren: 0.05}} id='features'  className='grid w-full mx-auto max-w-6xl grid-cols-12 gap-4 '  viewport={{margin : "-200px"}}>
                     <HeaderBlock />
                     
                     <DetailBlock />

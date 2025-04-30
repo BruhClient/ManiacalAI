@@ -46,13 +46,13 @@ const Navbar = () => {
 
         {/*  Logo  */}
         <Link href={user ? "/dashboard": "/"}>
-            <MotionDiv initial={{ opacity : 0 , y : 5}} animate={{opacity : 1 , y: 0}} className='flex items-center gap-2'>
+            <MotionDiv initial={{ opacity : 0 , y : 5}} animate={{opacity : 1 , y: 0}} className='flex items-end gap-2'>
 
                 <div>
-                    <Flame className='text-primary' />
+                    <Flame className='fill-black text-primary' size={30} />
                 </div>
             
-                <div className='text-2xl'>
+                <div className='text-2xl leading-none'>
                     Maniacal AI
                 </div>
                 

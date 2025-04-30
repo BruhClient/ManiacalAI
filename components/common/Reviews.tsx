@@ -43,7 +43,7 @@ const Reviews = () => {
     <div className='w-full flex justify-center flex-col items-center' id='reviews'>
         
         <div className='max-w-6xl w-full flex flex-col gap-3'>
-            <MotionDiv className='flex flex-col gap-2' variants={cardVariants} initial={"initial"} whileInView={"animate"}>
+            <MotionDiv className='flex flex-col gap-2' variants={cardVariants} initial={"initial"} whileInView={"animate"} viewport={{margin : "-200px"}} transition={{ duration: 0.5 }}>
                 <div className='text-3xl font-serif font-bold'>
                 What People Are Saying
                 </div>
@@ -53,7 +53,7 @@ const Reviews = () => {
                 
             </MotionDiv>
 
-            <MotionDiv className='flex flex-col gap-2' whileInView={"animate"} initial={"initial"} transition={{staggerChildren : 0.5}} >
+            <MotionDiv className='flex flex-col gap-2' whileInView={"animate"} initial={"initial"} transition={{staggerChildren : 0.7}} viewport={{margin : "-200px"}}>
                {reviews.map((review,index) => {
 
                 return <MotionDiv key={index} variants={cardVariants}>
