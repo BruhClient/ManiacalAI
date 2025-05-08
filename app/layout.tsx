@@ -67,6 +67,7 @@ export default function RootLayout({
         >
           
         <SessionProvider>
+        <div className="fixed inset-0 -z-10 h-full w-full bg-[radial-gradient(var(--muted),transparent_1px)] [background-size:16px_16px]"></div>
           <Navbar />
           {authModal}
           {children}
